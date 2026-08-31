@@ -38,7 +38,7 @@ for syntax.
 Read the issue with the repository pinned:
 
 ```bash
-gh issue view 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} \
+gh issue view 42 -R nsandford19/work-trek \
   --json number,title,state,labels,body,url
 ```
 

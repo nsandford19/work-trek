@@ -13,7 +13,7 @@ tags: [<tag>]
 
 > Delete this quote block and every `<...>` placeholder before committing.
 > File as `projects/<name>/README.md`. Create the `project:<name>` label too:
-> `gh label create -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} "project:<name>" --description "Project: <name>" --color D4C5F9`
+> `gh label create -R nsandford19/work-trek "project:<name>" --description "Project: <name>" --color D4C5F9`
 >
 > **Keep this under one screen.** It is a hub, not a document — it links outward. If it grows,
 > split into `architecture.md`, a runbook, or a knowledge note.
@@ -37,7 +37,7 @@ detail rather than expanding here.
 **Never list tasks or status here** — issues are the only source of truth:
 
 ```bash
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label project:<name>
+gh issue list -R nsandford19/work-trek --state open --label project:<name>
 ```
 
 ## Key decisions

@@ -56,7 +56,7 @@ The brief asked to be challenged. Eight substantive changes were made.
 
 ### 2.1 GitHub *Issue Types* cannot be used (hard constraint)
 
-Native issue types are an **organization-level** feature. `{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}`
+Native issue types are an **organization-level** feature. `nsandford19/work-trek`
 is owned by a personal account; `GET /repos/.../issues/types` returns 404. Type is therefore
 a **label** (`type:task`, `type:investigation`, …).
 

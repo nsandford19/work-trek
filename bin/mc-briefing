@@ -93,7 +93,7 @@ case "${1:-}" in
     # Archive the briefing to GitHub Discussions: one discussion per day, each run
     # appended as a comment. Survives the next run overwriting latest-briefing.md, and
     # reads fine from a phone. The briefing is never committed — .mc/ stays gitignored.
-    OWNER={{GITHUB_OWNER}}; NAME={{CONTROL_PLANE_REPO}}
+    OWNER=nsandford19; NAME=work-trek
     CAT="${MC_BRIEF_CATEGORY:-General}"
     TITLE="GitHub briefing — $(date +%F)"
     BODY="## $(date '+%H:%M %Z') run"$'\n\n'"$(cat "$BRIEF")"

@@ -18,10 +18,10 @@ created: <YYYY-MM-DD>
 ## Gathering (run these, then write below)
 
 ```bash
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state closed --search "closed:>=<YYYY-MM-DD>" --json number,title,stateReason
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:blocked
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:waiting --json number,title,updatedAt
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:inbox
+gh issue list -R nsandford19/work-trek --state closed --search "closed:>=<YYYY-MM-DD>" --json number,title,stateReason
+gh issue list -R nsandford19/work-trek --state open --label status:blocked
+gh issue list -R nsandford19/work-trek --state open --label status:waiting --json number,title,updatedAt
+gh issue list -R nsandford19/work-trek --state open --label status:inbox
 git log --since="1 week ago" --diff-filter=A --name-only -- knowledge/ '**/decisions/**'
 ```
 

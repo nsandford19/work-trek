@@ -23,10 +23,10 @@ rg -in "<key words>" reports/generated/issues.md
 No cache, or nothing found and the cache is old? Fall back to the API:
 
 ```bash
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --search "<key words>" --json number,title,state
+gh issue list -R nsandford19/work-trek --state all --search "<key words>" --json number,title,state
 ```
 
-If it exists, verify it live (`gh issue view <n> -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}`)
+If it exists, verify it live (`gh issue view <n> -R nsandford19/work-trek`)
 and comment on it instead of creating a duplicate.
 
 ## 2. Choose the type — exactly one
@@ -93,7 +93,7 @@ Verbatim error, command, or log excerpt if there is one.
 ## 6. Create it
 
 ```bash
-gh issue create -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} \
+gh issue create -R nsandford19/work-trek \
   --title "Fix stale DNS records surviving zone reload" \
   --body-file <path> \
   --label type:bug,status:inbox,p2,area:networking
@@ -108,8 +108,8 @@ If it belongs to an initiative, attach it as a native sub-issue (verified workin
 
 ```bash
 gh api graphql -f query='mutation($p:ID!,$c:ID!){addSubIssue(input:{issueId:$p,subIssueId:$c}){issue{number}}}' \
-  -F p="$(gh issue view 10 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json id --jq .id)" \
-  -F c="$(gh issue view 43 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json id --jq .id)"
+  -F p="$(gh issue view 10 -R nsandford19/work-trek --json id --jq .id)" \
+  -F c="$(gh issue view 43 -R nsandford19/work-trek --json id --jq .id)"
 ```
 
 If that fails, add `Parent: #10` to the body instead. **Never maintain both** for the same pair.

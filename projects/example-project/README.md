@@ -34,7 +34,7 @@ the queue in under a minute.
 **Never list tasks or status here** — issues are the only source of truth:
 
 ```bash
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label project:example-project
+gh issue list -R nsandford19/work-trek --state open --label project:example-project
 ```
 
 ## Conventions

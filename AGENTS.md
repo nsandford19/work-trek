@@ -107,5 +107,5 @@ common ones:
 context · `knowledge/` cross-project facts · `decisions/` ADRs · `investigations/` findings
 · `runbooks/` procedures · `skills/` workflows · `bin/` optional tooling.
 
-This repo is `{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}` (private). Its own issues are the control
+This repo is `nsandford19/work-trek` (private). Its own issues are the control
 plane for **all** of the operator's engineering work, not just work on this repo.

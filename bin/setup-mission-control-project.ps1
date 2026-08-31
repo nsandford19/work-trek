@@ -20,8 +20,8 @@ Workflows -> Auto-add to project).
 #>
 [CmdletBinding()]
 param(
-    [string] $Owner = '{{GITHUB_OWNER}}',
-    [string] $Repository = '{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}',
+    [string] $Owner = 'nsandford19',
+    [string] $Repository = 'nsandford19/work-trek',
     [string] $Title = 'Work Trek',
     [switch] $VerifyOnly
 )

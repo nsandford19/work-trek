@@ -19,14 +19,14 @@ answers worse, not better.
 
 | Asked | Read |
 | --- | --- |
-| What should I work on next? | [`skills/whats-next`](../skills/whats-next/SKILL.md) → `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open`, plus `repositories/*.yaml` for local availability |
-| What am I working on right now? | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:in-progress` |
-| What is blocked? | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:blocked` then check each `Blocked by:` line |
-| What am I waiting on? | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:waiting` — flag anything not updated in 7+ days |
+| What should I work on next? | [`skills/whats-next`](../skills/whats-next/SKILL.md) → `gh issue list -R nsandford19/work-trek --state open`, plus `repositories/*.yaml` for local availability |
+| What am I working on right now? | `gh issue list -R nsandford19/work-trek --state open --label status:in-progress` |
+| What is blocked? | `gh issue list -R nsandford19/work-trek --state open --label status:blocked` then check each `Blocked by:` line |
+| What am I waiting on? | `gh issue list -R nsandford19/work-trek --state open --label status:waiting` — flag anything not updated in 7+ days |
 | What unfinished work do I have? | `status:in-progress` + `status:review` + `status:blocked` |
-| What needs triage? | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:inbox` |
-| What did I finish recently? | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state closed --limit 20 --json number,title,closedAt,stateReason` |
-| How is initiative X going? | `gh issue view <n> -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}` for the initiative, then its sub-issues |
+| What needs triage? | `gh issue list -R nsandford19/work-trek --state open --label status:inbox` |
+| What did I finish recently? | `gh issue list -R nsandford19/work-trek --state closed --limit 20 --json number,title,closedAt,stateReason` |
+| How is initiative X going? | `gh issue view <n> -R nsandford19/work-trek` for the initiative, then its sub-issues |
 | Which tasks can I do on this laptop? | `whats-next`, machine filter step — `needs:machine` labels + `repositories/*.yaml` |
 
 ---
@@ -35,14 +35,14 @@ answers worse, not better.
 
 | Asked | Read |
 | --- | --- |
-| What happened with project X? | `projects/X/README.md` → then `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --label project:X` |
-| What happened with <topic>? | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --search "<topic>"`, then `gh issue view N -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --comments`, then the linked findings doc |
+| What happened with project X? | `projects/X/README.md` → then `gh issue list -R nsandford19/work-trek --state all --label project:X` |
+| What happened with <topic>? | `gh issue list -R nsandford19/work-trek --state all --search "<topic>"`, then `gh issue view N -R nsandford19/work-trek --comments`, then the linked findings doc |
 | What did we conclude last time? | The investigation's findings doc (linked from the issue), not the comment thread |
 | Why did we choose Y? | `rg -il "<topic>" decisions/ projects/*/decisions/` → read the ADR |
 | What was the result of investigation Y? | `rg -il "<topic>" investigations/ projects/*/investigations/` |
 | What did I learn about technology Z? | `rg -il "<Z>" knowledge/` → then the specific file |
-| Have I solved something like this before? | `rg -i "<error text or symptom>" knowledge/ investigations/ projects/` then `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --search` |
-| What recurring problems do I hit with <area>? | `knowledge/<area>/`, plus `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --label area:<area>` |
+| Have I solved something like this before? | `rg -i "<error text or symptom>" knowledge/ investigations/ projects/` then `gh issue list -R nsandford19/work-trek --state all --search` |
+| What recurring problems do I hit with <area>? | `knowledge/<area>/`, plus `gh issue list -R nsandford19/work-trek --state all --label area:<area>` |
 | What have I learned recently? | `git log --since="3 weeks ago" --name-only -- knowledge/ decisions/ investigations/` |
 | What decisions were made this month? | `git log --since="1 month ago" --diff-filter=A --name-only -- '**/decisions/**'` |
 
@@ -68,7 +68,7 @@ the issue cache — `rg -in '<topic>' reports/generated/issues.md`, ladder and s
 | Which repository owns this production problem? | `organizations/<name>.md` ownership notes, then `repositories/*.yaml` descriptions |
 | What machine am I on? | `$env:MC_MACHINE` else `hostname` → match `machines/*.yaml` |
 | What tools/constraints does this machine have? | `machines/<id>.yaml` |
-| What tasks relate to repository X? | Search issues for its exact `Repository:` identity; use `repositories/X.yaml` → `project:` → `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --label project:<p>` only as fallback |
+| What tasks relate to repository X? | Search issues for its exact `Repository:` identity; use `repositories/X.yaml` → `project:` → `gh issue list -R nsandford19/work-trek --label project:<p>` only as fallback |
 
 ---
 
@@ -110,7 +110,7 @@ the issue cache — `rg -in '<topic>' reports/generated/issues.md`, ladder and s
 3. **Verbatim error strings are the best queries.** They were deliberately recorded for this.
 4. **Then operational history:**
    ```bash
-   gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --search '<term>' --json number,title,state
+   gh issue list -R nsandford19/work-trek --state all --search '<term>' --json number,title,state
    ```
 5. **Check `status:` before trusting** anything you open (see [`MEMORY_POLICY.md`](MEMORY_POLICY.md) §6).
 

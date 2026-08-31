@@ -17,8 +17,8 @@ Every value a cloner must supply uses one convention:
 
 | Placeholder | Meaning | Example |
 | --- | --- | --- |
-| `{{GITHUB_OWNER}}` | Your GitHub user or org | `jdoe` |
-| `{{CONTROL_PLANE_REPO}}` | This repository's name | `work-trek` |
+| `nsandford19` | Your GitHub user or org | `jdoe` |
+| `work-trek` | This repository's name | `work-trek` |
 
 One command fills them in everywhere (it derives the values from your `origin` remote,
 or takes them as arguments) and works standalone:
@@ -31,7 +31,7 @@ or takes them as arguments) and works standalone:
 Equivalent one-liner if you prefer to do it by hand:
 
 ```bash
-git ls-files -z | xargs -0 sed -i 's|{{GITHUB_OWNER}}|<owner>|g; s|{{CONTROL_PLANE_REPO}}|<repo>|g'
+git ls-files -z | xargs -0 sed -i 's|nsandford19|<owner>|g; s|work-trek|<repo>|g'
 ```
 
 Commit the result.
@@ -54,6 +54,6 @@ equivalents in [`agent/OPERATING_SYSTEM.md`](../agent/OPERATING_SYSTEM.md) §7.
 
 ## Verifying the result
 
-`./bin/mc.ps1 validate` should print `Valid.`, `git grep -n '{{GITHUB_OWNER}}'` should
+`./bin/mc.ps1 validate` should print `Valid.`, `git grep -n 'nsandford19'` should
 return nothing, and a bootstrap run on the finished clone should change nothing. The full
 end-to-end test sequence is in [`WALKTHROUGH.md`](WALKTHROUGH.md) §7.

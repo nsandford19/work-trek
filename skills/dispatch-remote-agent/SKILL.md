@@ -92,7 +92,7 @@ pause between tool calls looks identical to a finished task.
 Poll the durable side effect instead:
 
 ```bash
-gh issue view <n> -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} \
+gh issue view <n> -R nsandford19/work-trek \
   --json labels,updatedAt,comments --jq '{updatedAt, labels: [.labels[].name], last: .comments[-1].body[0:200]}'
 ```
 

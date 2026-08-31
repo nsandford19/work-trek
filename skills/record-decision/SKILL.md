@@ -68,7 +68,7 @@ If a `type:decision` issue drove this: put its number in `issues:` front matter,
 on the issue with the ADR path.
 
 ```bash
-gh issue comment 57 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --body "Decided: decisions/0004-<slug>.md — <the decision in one line>."
+gh issue comment 57 -R nsandford19/work-trek --body "Decided: decisions/0004-<slug>.md — <the decision in one line>."
 ```
 
 ## 6. Commit
@@ -81,16 +81,16 @@ git commit -m "docs(decision): record <the decision>"
 ## 7. Close the decision issue — ask first
 
 ```bash
-gh issue edit 57 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:in-progress
-gh issue close 57 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --reason completed
+gh issue edit 57 -R nsandford19/work-trek --remove-label status:in-progress
+gh issue close 57 -R nsandford19/work-trek --reason completed
 ```
 
 **Then unblock the work that was waiting on it.** This is the step most often forgotten, and it
 is the whole point of tracking decisions as issues:
 
 ```bash
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:blocked --json number,title,body   # find 'Blocked by: #57'
-gh issue edit 43 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:blocked --add-label status:ready
+gh issue list -R nsandford19/work-trek --state open --label status:blocked --json number,title,body   # find 'Blocked by: #57'
+gh issue edit 43 -R nsandford19/work-trek --remove-label status:blocked --add-label status:ready
 ```
 
 ## Superseding an existing ADR

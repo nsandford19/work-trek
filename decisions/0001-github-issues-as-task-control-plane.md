@@ -26,7 +26,7 @@ is the only property that matters for a memory system.
 
 ## Decision
 
-**GitHub Issues in `{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}` are the sole source of truth for work
+**GitHub Issues in `nsandford19/work-trek` are the sole source of truth for work
 state, for all projects and all source repositories.** Markdown in this repository holds
 durable knowledge only, and never task state.
 

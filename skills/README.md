@@ -58,7 +58,7 @@ agent scans. Put those in the target code repository or in the agent's global co
 2. **Short.** Past ~150 lines it is really two skills, or it is documentation that belongs in
    `runbooks/`.
 3. **Literal commands, not descriptions of commands.** `gh issue edit 42 -R
-   {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --add-label status:ready` — not "update the label".
+   nsandford19/work-trek --add-label status:ready` — not "update the label".
 4. **Numbered steps** in the order they are performed.
 5. **Name what requires asking first.** Closing issues, pushing to `main`, editing `agent/**`.
 6. **Front matter** with `name` and `description`; the description is what makes it

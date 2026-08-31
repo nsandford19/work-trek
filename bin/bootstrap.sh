@@ -323,11 +323,11 @@ cat <<'EOF'
 
   Raw equivalents while pwsh is unavailable:
 
-    what to work on   gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --json number,title,labels,body
+    what to work on   gh issue list -R nsandford19/work-trek --state open --json number,title,labels,body
                       then follow skills/whats-next/SKILL.md
-    resolve issue     gh issue view 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json labels,body
+    resolve issue     gh issue view 42 -R nsandford19/work-trek --json labels,body
                       then map Repository/project through repositories/*.yaml
-    what is blocked   gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:blocked
+    what is blocked   gh issue list -R nsandford19/work-trek --state open --label status:blocked
     find a repo       rg -i '<term>' repositories/
     find a repo scan  rg --files --hidden --glob '**/.git/HEAD' <dev-root>
     search memory     qmd query "<topic>"   (or rg -i '<topic>' over this clone)

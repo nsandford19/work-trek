@@ -497,7 +497,7 @@
 
 <header class="mast">
   <div class="wrap">
-    <p class="eyebrow"><b>{{GITHUB_OWNER}} / {{CONTROL_PLANE_REPO}}</b> · private · onboarding checklist</p>
+    <p class="eyebrow"><b>nsandford19 / work-trek</b> · private · onboarding checklist</p>
     <h1>Work Trek<span class="dim"> — Onboarding</span></h1>
     <p class="lede">Work Trek is the operator's personal engineering operating system: a private
       repository that any coding agent — Claude Code, Codex, Antigravity CLI — opens to behave like
@@ -608,12 +608,12 @@ gh auth status        <span class="c"># gh auth inside WSL is separate from Wind
           </div>
           <button class="copy-btn" type="button">Copy</button>
         </figcaption>
-        <pre data-os="win" tabindex="0"><code>git clone https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}.git
+        <pre data-os="win" tabindex="0"><code>git clone https://github.com/nsandford19/work-trek.git
 cd work-trek</code></pre>
-        <pre data-os="nix" tabindex="0" hidden><code>git clone https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}.git
+        <pre data-os="nix" tabindex="0" hidden><code>git clone https://github.com/nsandford19/work-trek.git
 cd work-trek</code></pre>
         <pre data-os="wsl" tabindex="0" hidden><code><span class="c"># clone into the Linux filesystem (~/...), not /mnt/c or /mnt/d</span>
-git clone https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}.git
+git clone https://github.com/nsandford19/work-trek.git
 cd work-trek</code></pre>
       </figure>
       <p class="fine">Private repository — <code>gh auth login</code> first if the clone is
@@ -708,7 +708,7 @@ rg -l "$(hostname)-wsl" machines/ <span class="c"># look for '&lt;hostname&gt;-w
         bare hostname. The WSL entry sets <code>hostnames: [&lt;hostname&gt;-wsl]</code> and
         must <strong>not</strong> list the bare hostname — that belongs to the Windows entry.
         A fallback hit on an <code>os: windows</code> entry inside WSL is a warning, not an
-        answer. Details: <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/machines/README.md"><code>machines/README.md</code></a>,
+        answer. Details: <a href="https://github.com/nsandford19/work-trek/blob/main/machines/README.md"><code>machines/README.md</code></a>,
         "WSL is a separate machine".
       </div>
       <p>Temporary machine (a container, a borrowed laptop)? Skip registration and set the
@@ -783,20 +783,20 @@ rg -l "$(hostname)-wsl" machines/ <span class="c"># look for '&lt;hostname&gt;-w
         <code>settings.json</code> <code>.statusLine</code> at it, backing up whatever it
         replaces and leaving every other setting alone. Needs <code>bash</code> and
         <code>jq</code>. Bootstrap offers it as its step&nbsp;7. Details:
-        <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/tooling/claude/README.md"><code>tooling/claude/README.md</code></a>.
+        <a href="https://github.com/nsandford19/work-trek/blob/main/tooling/claude/README.md"><code>tooling/claude/README.md</code></a>.
       </div>
       <div class="agent-note" data-agent="claude" hidden>
         <span class="tag">Claude Code</span>
         The block lands in <code>~/.claude/CLAUDE.md</code>, which Claude Code loads in every
         project. After this, Claude opened in any repository on this machine knows task state
-        lives in <code>{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}</code> issues. The same step is a good
+        lives in <code>nsandford19/work-trek</code> issues. The same step is a good
         moment to run <code>./bin/mc.ps1 statusline</code> for the shared status line.
       </div>
       <div class="agent-note" data-agent="codex" hidden>
         <span class="tag">Codex</span>
         The block lands in <code>~/.codex/AGENTS.md</code>, Codex's global instructions file.
         After this, Codex opened in any repository on this machine knows task state lives in
-        <code>{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}</code> issues.
+        <code>nsandford19/work-trek</code> issues.
       </div>
       <div class="agent-note" data-agent="antigravity" hidden>
         <span class="tag">Antigravity CLI</span>
@@ -965,8 +965,8 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
           damages the record.</span></li>
       </ol>
       <p class="fine">The full contract — scope precedence, blast radius, session checkpoint —
-        is in <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/AGENTS.md"><code>AGENTS.md</code></a>
-        and <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/agent/OPERATING_SYSTEM.md"><code>agent/OPERATING_SYSTEM.md</code></a>.
+        is in <a href="https://github.com/nsandford19/work-trek/blob/main/AGENTS.md"><code>AGENTS.md</code></a>
+        and <a href="https://github.com/nsandford19/work-trek/blob/main/agent/OPERATING_SYSTEM.md"><code>agent/OPERATING_SYSTEM.md</code></a>.
         Read both before doing substantial work. The concepts below unpack each piece.</p>
     </div>
   </section>
@@ -980,8 +980,8 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
       <h2>Concepts — the system the steps just built</h2>
       <p>The checklist gets a machine working; this track explains the operating model an
         agent follows once it is. Each section is self-contained — open what you need.
-        Canonical text: <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/AGENTS.md">AGENTS.md</a>
-        and <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/agent/OPERATING_SYSTEM.md">agent/OPERATING_SYSTEM.md</a>.</p>
+        Canonical text: <a href="https://github.com/nsandford19/work-trek/blob/main/AGENTS.md">AGENTS.md</a>
+        and <a href="https://github.com/nsandford19/work-trek/blob/main/agent/OPERATING_SYSTEM.md">agent/OPERATING_SYSTEM.md</a>.</p>
     </div>
 
     <details class="concept" id="c-premise">
@@ -1073,7 +1073,7 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
           <table>
             <thead><tr><th>Question</th><th>Canonical source</th></tr></thead>
             <tbody>
-              <tr><td>What work exists, and its state</td><td>GitHub Issues on <code>{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}</code> — labels + open/closed, read with <code>gh issue list</code></td></tr>
+              <tr><td>What work exists, and its state</td><td>GitHub Issues on <code>nsandford19/work-trek</code> — labels + open/closed, read with <code>gh issue list</code></td></tr>
               <tr><td>What is true, and why</td><td>Markdown: <code>knowledge/</code> facts · <code>decisions/</code> ADRs · <code>investigations/</code> findings · <code>runbooks/</code> procedures · <code>projects/</code> per-project context</td></tr>
               <tr><td>What machines and repositories exist</td><td>YAML registries: <code>machines/*.yaml</code> + <code>repositories/*.yaml</code></td></tr>
               <tr><td>How agents behave</td><td><code>agent/</code> policies + <code>skills/</code> workflows</td></tr>
@@ -1082,7 +1082,7 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
           </table>
         </div>
         <p class="fine">Full model with lifecycles and tradeoffs:
-          <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/ARCHITECTURE.md">ARCHITECTURE.md</a>.</p>
+          <a href="https://github.com/nsandford19/work-trek/blob/main/ARCHITECTURE.md">ARCHITECTURE.md</a>.</p>
       </div>
     </details>
 
@@ -1093,14 +1093,14 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
           rules:</p>
         <ul>
           <li><strong>Codex</strong> and <strong>Antigravity CLI</strong> read
-            <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/AGENTS.md"><code>AGENTS.md</code></a>
+            <a href="https://github.com/nsandford19/work-trek/blob/main/AGENTS.md"><code>AGENTS.md</code></a>
             natively; it routes to
-            <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/agent/OPERATING_SYSTEM.md"><code>agent/OPERATING_SYSTEM.md</code></a>.</li>
+            <a href="https://github.com/nsandford19/work-trek/blob/main/agent/OPERATING_SYSTEM.md"><code>agent/OPERATING_SYSTEM.md</code></a>.</li>
           <li><strong>Claude Code</strong> loads
-            <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/CLAUDE.md"><code>CLAUDE.md</code></a>,
+            <a href="https://github.com/nsandford19/work-trek/blob/main/CLAUDE.md"><code>CLAUDE.md</code></a>,
             a shim whose whole job is "read <code>AGENTS.md</code> and follow it".</li>
           <li><strong>Skills</strong> are canonical in
-            <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/tree/main/skills"><code>skills/&lt;name&gt;/SKILL.md</code></a>.
+            <a href="https://github.com/nsandford19/work-trek/tree/main/skills"><code>skills/&lt;name&gt;/SKILL.md</code></a>.
             Claude Code auto-discovers <code>.claude/skills/</code> — those are <em>generated
             stubs</em> carrying only a name and description. Edit the canonical body, then run
             <code>mc skills sync</code>; the validator checks the stubs match.</li>
@@ -1137,8 +1137,8 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
           highest-precedence scope in the whole system.</p>
         <p class="fine">Why hostname-first: zero setup after registering once — clone and go,
           forever. Schema and full rules:
-          <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/machines/README.md">machines/README.md</a>,
-          <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/decisions/0003-machine-identity-via-hostname-map.md">ADR 0003</a>.</p>
+          <a href="https://github.com/nsandford19/work-trek/blob/main/machines/README.md">machines/README.md</a>,
+          <a href="https://github.com/nsandford19/work-trek/blob/main/decisions/0003-machine-identity-via-hostname-map.md">ADR 0003</a>.</p>
       </div>
     </details>
 
@@ -1146,7 +1146,7 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
       <summary>The repository registry<span class="kicker">what lives where</span></summary>
       <div class="concept-body">
         <p>One YAML file per source repository, in
-          <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/tree/main/repositories"><code>repositories/</code></a>.
+          <a href="https://github.com/nsandford19/work-trek/tree/main/repositories"><code>repositories/</code></a>.
           Its <code>machines:</code> map is the availability truth: a machine absent from the
           map <em>does not have the repository checked out</em>. That is what lets an agent
           answer "which machine has X?" and "which tasks can I do on this laptop?" — and when
@@ -1166,7 +1166,7 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
             project, organization, and personal defaults.</li>
         </ul>
         <p class="fine">Schema and lifecycle:
-          <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/repositories/README.md">repositories/README.md</a>.</p>
+          <a href="https://github.com/nsandford19/work-trek/blob/main/repositories/README.md">repositories/README.md</a>.</p>
       </div>
     </details>
 
@@ -1211,12 +1211,12 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
           anywhere with <code>git fetch origin dashboard &amp;&amp; git show
           FETCH_HEAD:issues.md</code>). Each is a disposable view with a generated-at stamp.
           Use them to <em>find</em> issue numbers; read live state
-          (<code>gh issue view &lt;n&gt; -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}</code>) before
+          (<code>gh issue view &lt;n&gt; -R nsandford19/work-trek</code>) before
           acting on or mutating anything found there. If a snapshot and GitHub disagree, the snapshot is stale, not the system
           broken — refresh it. The cache never originates work state.</p>
         <p class="fine">Full taxonomy, recipes, the ranking algorithm, and the cache
           boundaries:
-          <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/agent/TASK_POLICY.md">agent/TASK_POLICY.md</a>.</p>
+          <a href="https://github.com/nsandford19/work-trek/blob/main/agent/TASK_POLICY.md">agent/TASK_POLICY.md</a>.</p>
       </div>
     </details>
 
@@ -1248,7 +1248,7 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
             before trusting any document.</li>
         </ul>
         <p class="fine">The full bar, front-matter schema, and correction table:
-          <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/agent/MEMORY_POLICY.md">agent/MEMORY_POLICY.md</a>.</p>
+          <a href="https://github.com/nsandford19/work-trek/blob/main/agent/MEMORY_POLICY.md">agent/MEMORY_POLICY.md</a>.</p>
       </div>
     </details>
 
@@ -1280,7 +1280,7 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
           </table>
         </div>
         <p class="fine">Index and authoring rules:
-          <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/skills/README.md">skills/README.md</a>.</p>
+          <a href="https://github.com/nsandford19/work-trek/blob/main/skills/README.md">skills/README.md</a>.</p>
       </div>
     </details>
 
@@ -1316,7 +1316,7 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
       <summary>Verify your environment<span class="kicker">troubleshooting</span></summary>
       <div class="concept-body">
         <p>Three checks, from broadest to strictest —
-          <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/bin/bootstrap.ps1"><code>bootstrap.ps1</code></a>
+          <a href="https://github.com/nsandford19/work-trek/blob/main/bin/bootstrap.ps1"><code>bootstrap.ps1</code></a>
           (placeholders, tools, auth, identity, validation, labels, qmd, next steps — safe to re-run any time),
           <code>mc doctor</code> (tools, auth, machine identity, local repo paths), and
           <code>mc validate</code> (front matter, registries, links, skill stubs, secret
@@ -1346,7 +1346,7 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
                 <td><code>mc</code> and <code>bootstrap.ps1</code> need it;
                   <code>bootstrap.sh</code> falls back to POSIX checks without it. Every
                   <code>mc</code> command has a raw <code>gh</code>/<code>rg</code> equivalent
-                  (<a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/agent/OPERATING_SYSTEM.md">OPERATING_SYSTEM.md</a> §7)
+                  (<a href="https://github.com/nsandford19/work-trek/blob/main/agent/OPERATING_SYSTEM.md">OPERATING_SYSTEM.md</a> §7)
                   — you lose speed, never function. Install: <code>winget install Microsoft.PowerShell</code>.</td>
               </tr>
               <tr>
@@ -1399,12 +1399,12 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
           <tr>
             <td><code>mc next</code></td>
             <td>Rank open issues and recommend what to work on</td>
-            <td><code>gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --json number,title,labels,body</code>, then the ranking in <code>skills/whats-next/SKILL.md</code></td>
+            <td><code>gh issue list -R nsandford19/work-trek --state open --json number,title,labels,body</code>, then the ranking in <code>skills/whats-next/SKILL.md</code></td>
           </tr>
           <tr>
             <td><code>mc issue 42</code></td>
             <td>Resolve an issue to its registered source checkout on this machine</td>
-            <td><code>gh issue view 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json labels,body</code>, then map its <code>Repository:</code> or <code>project:</code> value through <code>repositories/*.yaml</code></td>
+            <td><code>gh issue view 42 -R nsandford19/work-trek --json labels,body</code>, then map its <code>Repository:</code> or <code>project:</code> value through <code>repositories/*.yaml</code></td>
           </tr>
           <tr>
             <td><code>mc doctor</code></td>
@@ -1454,9 +1454,9 @@ qmd embed                             <span class="c"># one-off ~2 GB local mode
 
 <footer>
   <div class="wrap">
-    <span>Read next: <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/AGENTS.md"><code>AGENTS.md</code></a> → <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/agent/OPERATING_SYSTEM.md"><code>agent/OPERATING_SYSTEM.md</code></a></span>
-    <span>Workflows: <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/skills/README.md"><code>skills/README.md</code></a></span>
-    <span>Design rationale: <a href="https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/ARCHITECTURE.md"><code>ARCHITECTURE.md</code></a></span>
+    <span>Read next: <a href="https://github.com/nsandford19/work-trek/blob/main/AGENTS.md"><code>AGENTS.md</code></a> → <a href="https://github.com/nsandford19/work-trek/blob/main/agent/OPERATING_SYSTEM.md"><code>agent/OPERATING_SYSTEM.md</code></a></span>
+    <span>Workflows: <a href="https://github.com/nsandford19/work-trek/blob/main/skills/README.md"><code>skills/README.md</code></a></span>
+    <span>Design rationale: <a href="https://github.com/nsandford19/work-trek/blob/main/ARCHITECTURE.md"><code>ARCHITECTURE.md</code></a></span>
   </div>
 </footer>
 

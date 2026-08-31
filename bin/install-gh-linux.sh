@@ -205,7 +205,7 @@ fi
 
 # The capability the floor exists for. Proves the install rather than trusting the number.
 if gh auth status >/dev/null 2>&1; then
-    if gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --limit 1 --json number,stateReason >/dev/null 2>&1; then
+    if gh issue list -R nsandford19/work-trek --state all --limit 1 --json number,stateReason >/dev/null 2>&1; then
         ok 'issue JSON exposes stateReason (the capability the floor exists for)'
     else
         bad 'gh accepted the version check but rejected --json stateReason'

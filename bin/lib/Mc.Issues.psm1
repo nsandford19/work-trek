@@ -14,7 +14,7 @@ Set-StrictMode -Version Latest
 
 function Get-McRepoSlug {
     param([Parameter(Mandatory)][string] $RepoRoot)
-    $slug = '{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}'
+    $slug = 'nsandford19/work-trek'
     $url = (& git -C $RepoRoot remote get-url origin 2>$null)
     if ($url -and "$url" -match '[:/]([^/:]+/[^/]+?)(\.git)?/?$') { $slug = $Matches[1] }
     return $slug

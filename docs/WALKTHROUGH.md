@@ -91,8 +91,8 @@ repository" instead.
 
 | Placeholder | Meaning |
 | --- | --- |
-| `{{GITHUB_OWNER}}` | Your GitHub user or org |
-| `{{CONTROL_PLANE_REPO}}` | The name of your copy of this repository |
+| `nsandford19` | Your GitHub user or org |
+| `work-trek` | The name of your copy of this repository |
 
 Where they appear: `agent/*.md`, `skills/*/SKILL.md` (+ `.claude/skills` stubs),
 `templates/*.md`, `docs/onboarding.html`, registry READMEs, and as defaults/fallbacks in
@@ -112,7 +112,7 @@ Substitution is wired into setup:
   mode they report and continue with what works before substitution. Already-substituted
   clones skip the step silently.
 - Manual equivalent (documented in the README):
-  `git ls-files -z | xargs -0 sed -i 's|{{GITHUB_OWNER}}|<owner>|g; s|{{CONTROL_PLANE_REPO}}|<repo>|g'`
+  `git ls-files -z | xargs -0 sed -i 's|nsandford19|<owner>|g; s|work-trek|<repo>|g'`
 
 One deliberate softening: `Get-McRepoSlug` (used by the dashboard and issue-cache builds)
 prefers the `origin` remote at runtime and uses the placeholder string only as a
@@ -157,7 +157,7 @@ completed, plus client-side filters and search over the embedded issue JSON.
 1. **Bootstrap**: `./bin/bootstrap.sh` — on a fresh clone it first offers the placeholder
    substitution (accept it, commit the result); then expect required-tool OKs, gh auth OK,
    an offer to register this machine (accept it), repository validation, and the
-   label-sync offer (accept it). Afterwards `git grep -n '{{GITHUB_OWNER}}'` must return
+   label-sync offer (accept it). Afterwards `git grep -n 'nsandford19'` must return
    nothing, and a second bootstrap run must change nothing.
 2. **Validation**: `./bin/mc.ps1 validate` → `Valid.` (front matter, registries, links,
    stubs, secret patterns, pinned recipes).

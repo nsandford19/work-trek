@@ -18,7 +18,7 @@ Always pin `gh`; this workflow is commonly invoked while the shell is inside ano
 repository.
 
 ```bash
-gh issue view 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} \
+gh issue view 42 -R nsandford19/work-trek \
   --json number,title,state,labels,body,url
 ```
 
@@ -60,7 +60,7 @@ Do not start a closed issue. For an open issue:
 When the request clearly selects actionable work:
 
 ```bash
-gh issue edit 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} \
+gh issue edit 42 -R nsandford19/work-trek \
   --remove-label status:ready --add-label status:in-progress
 ```
 
@@ -87,7 +87,7 @@ repository's contribution rules, implement the requested outcome, and validate i
 to risk. Working notes belong on the Work Trek issue:
 
 ```bash
-gh issue comment 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --body "<concise progress note>"
+gh issue comment 42 -R nsandford19/work-trek --body "<concise progress note>"
 ```
 
 Do not push, deploy, close the issue, or act on live systems without the authorization those

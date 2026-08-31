@@ -22,7 +22,7 @@ and continue — only the local-availability filter (step 5) is affected.
 ## 2. Fetch open work — one call
 
 ```bash
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --limit 200 \
+gh issue list -R nsandford19/work-trek --state open --limit 200 \
   --json number,title,labels,body,createdAt,updatedAt
 ```
 
@@ -47,11 +47,11 @@ Labels drift. For every remaining issue, parse `Blocked by: #12, #15` from the b
 each referenced issue:
 
 ```bash
-gh issue view 12 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json number,state,title
+gh issue view 12 -R nsandford19/work-trek --json number,state,title
 ```
 
 - A `ready` issue whose blocker is still **open** → not ready. Fix the label:
-  `gh issue edit <n> -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:ready --add-label status:blocked`
+  `gh issue edit <n> -R nsandford19/work-trek --remove-label status:ready --add-label status:blocked`
 - A `blocked` issue whose blockers are **all closed** → it *is* ready. Fix the label and
   include it as a candidate. This is often the most valuable find of the whole workflow.
 
@@ -79,7 +79,7 @@ In order:
 2. Priority: `p0` → `p1` → `p2` → `p3`.
 3. Belongs to an open `type:initiative` — check the sub-issue relationship:
    ```bash
-   gh api repos/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/issues/<initiative>/sub_issues \
+   gh api repos/nsandford19/work-trek/issues/<initiative>/sub_issues \
      --jq '.[] | "#\(.number) \(.title) [\(.state)]"'
    ```
 4. `type:decision` that blocks other issues — unblocking work is high leverage.
@@ -92,7 +92,7 @@ newest comment, written by `session-checkpoint`, and it is the entire payload of
 handoff. **Fetch it for the recommendation before answering:**
 
 ```bash
-gh issue view <n> -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} \
+gh issue view <n> -R nsandford19/work-trek \
   --json comments --jq '.comments[-1].body'
 ```
 
@@ -138,7 +138,7 @@ Rules for the answer:
 If the operator picks something up:
 
 ```bash
-gh issue edit 43 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:ready --add-label status:in-progress
+gh issue edit 43 -R nsandford19/work-trek --remove-label status:ready --add-label status:in-progress
 ```
 
 Do not change labels unprompted, other than the readiness corrections in step 4.

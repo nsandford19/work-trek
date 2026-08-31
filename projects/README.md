@@ -15,7 +15,7 @@ Every project has a matching `project:<name>` issue label, so a project's live w
 one query away:
 
 ```bash
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label project:work-trek
+gh issue list -R nsandford19/work-trek --state open --label project:work-trek
 ```
 
 ## Active projects
@@ -66,7 +66,7 @@ Put a document at the narrowest scope where it is still true.
 ```bash
 mkdir -p projects/<name>/{decisions,investigations,runbooks}
 cp templates/project-README.md projects/<name>/README.md   # then edit
-gh label create -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} "project:<name>" --description "Project: <name>" --color D4C5F9
+gh label create -R nsandford19/work-trek "project:<name>" --description "Project: <name>" --color D4C5F9
 ```
 
 Also append the new `project:<name>` label to [`.github/labels.yml`](../.github/labels.yml) —

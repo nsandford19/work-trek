@@ -86,7 +86,7 @@ one-liner names the signals that decided it.
    CI failure on the operator's own PR is Needs action.
 3. Repository familiarity: `rg -l "repository: <full_name>" repositories/` — registered
    repos are where the operator actively works. Unregistered → weight down, never auto-noise.
-4. Work Trek itself (`{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}`) — the control plane; weight up.
+4. Work Trek itself (`nsandford19/work-trek`) — the control plane; weight up.
 5. Recency of `updated_at`.
 6. `PREFERENCES.md` Rules — may override any of the above, in either direction.
 

@@ -558,7 +558,7 @@ function Invoke-Next {
     # open initiative so the implementation matches the documented ranking algorithm.
     $initiativeFor = @{}
     $remote = (& git -C $RepoRoot remote get-url origin 2>$null)
-    $slug = '{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}'
+    $slug = 'nsandford19/work-trek'
     if ($remote -and "$remote" -match '[:/]([^/:]+/[^/]+?)(\.git)?/?$') { $slug = $Matches[1] }
     foreach ($initiative in ($issues | Where-Object { (Get-LabelValue $_ 'type:') -contains 'initiative' })) {
         $subJson = & gh api "repos/$slug/issues/$($initiative.number)/sub_issues" 2>$null
@@ -1152,7 +1152,7 @@ function Test-PinnedGhRecipes {
                 if ($rest -match $pinRx) { $pinned++; continue }
                 $shown = $rest.Trim()
                 if ($shown.Length -gt 80) { $shown = $shown.Substring(0, 77) + '...' }
-                Write-Bad "${rel}:$($i + 1): unpinned gh recipe - add -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}: $shown"
+                Write-Bad "${rel}:$($i + 1): unpinned gh recipe - add -R nsandford19/work-trek: $shown"
                 $hits++
             }
         }
@@ -1253,7 +1253,7 @@ function Invoke-LabelsSync {
     if ($dryRun) { Write-Host ''; Write-Host 'Dry run - nothing changed.' -ForegroundColor Cyan; return }
     Write-Host ''
     Write-Host 'Labels applied. GitHub default labels (bug, enhancement, ...) are left alone;' -ForegroundColor DarkGray
-    Write-Host 'delete them by hand if you want a clean list: gh label delete -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} bug' -ForegroundColor DarkGray
+    Write-Host 'delete them by hand if you want a clean list: gh label delete -R nsandford19/work-trek bug' -ForegroundColor DarkGray
     if ($script:Problems -gt 0) { exit 1 }
 }
 
@@ -1266,7 +1266,7 @@ function Invoke-Onboard {
     $dryRun = $Rest -contains '--dry-run'
     $yes    = $Rest -contains '--yes'
 
-    $slug = '{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}'
+    $slug = 'nsandford19/work-trek'
     $url = (& git -C $RepoRoot remote get-url origin 2>$null)
     if ($url -and "$url" -match '[:/]([^/:]+/[^/]+?)(\.git)?/?$') { $slug = $Matches[1] }
 

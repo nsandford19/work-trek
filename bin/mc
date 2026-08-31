@@ -15,9 +15,9 @@ mc requires PowerShell 7 (pwsh), which was not found.
 This is not a blocker. Use the raw equivalents instead:
 
   mc machine      ->  echo "$MC_MACHINE"; hostname; rg -l "$(hostname)" machines/
-  mc next         ->  gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --json number,title,labels,body
+  mc next         ->  gh issue list -R nsandford19/work-trek --state open --json number,title,labels,body
                        then follow skills/whats-next/SKILL.md
-  mc issue 42     ->  gh issue view 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json labels,body
+  mc issue 42     ->  gh issue view 42 -R nsandford19/work-trek --json labels,body
                        then match Repository/project to repositories/*.yaml
   mc doctor       ->  git --version; gh auth status
   mc validate     ->  check the schemas in machines/README.md and agent/MEMORY_POLICY.md

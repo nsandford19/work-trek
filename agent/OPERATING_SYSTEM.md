@@ -108,18 +108,18 @@ Rules:
 - **Check for prior art first.** Before investigating anything, search durable memory —
   `qmd query "<topic>"` when qmd is available ([ADR 0004](../decisions/0004-qmd-as-memory-retrieval-driver.md)),
   otherwise `rg` over `knowledge/`, `investigations/`, `decisions/` — plus
-  `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --search`. "Have I solved this before?" should be your
+  `gh issue list -R nsandford19/work-trek --state all --search`. "Have I solved this before?" should be your
   reflex, not an afterthought. After `git pull`, `qmd update` keeps the index fresh.
 - **Finding an issue is a grep; acting on one is an API call.** To *pinpoint* an issue —
   which number covers X? what did we say about Y? — grep the issue cache first:
   `reports/generated/issues.md` if present; else the zero-API copy,
   `git fetch origin dashboard && git show FETCH_HEAD:issues.md`; else build it with
   `mc issues cache`; only then fall back to
-  `gh search issues "<topic>" --owner {{GITHUB_OWNER}}`.
+  `gh search issues "<topic>" --owner nsandford19`.
   The cache header carries a `generated-at:` stamp — older than ~24 h, refresh it when you
   can. To **act or decide** — current status, or before commenting, closing, or starting
   work — always verify live with
-  `gh issue view <n> -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}`:
+  `gh issue view <n> -R nsandford19/work-trek`:
   the cache is a stale index, never truth ([`TASK_POLICY.md`](TASK_POLICY.md) §3).
 - **Respect blast radius:** free to create/comment on issues and write durable memory on a
   branch. Ask before closing issues, pushing to `main`, force-pushing, or touching
@@ -218,14 +218,14 @@ memory corpus; if qmd is missing or its index is absent, fall back to `rg` and c
 | --- | --- |
 | `mc machine` | `hostname` + `rg <hostname> machines/` |
 | `qmd query "<topic>"` | `rg -i '<topic>' knowledge/ investigations/ decisions/ runbooks/ projects/` |
-| `mc next` | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --json number,title,labels,body` + the ranking in [`TASK_POLICY.md`](TASK_POLICY.md) |
-| `mc issue 42` | `gh issue view 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json labels,body` + exact registry lookup in `repositories/*.yaml` |
+| `mc next` | `gh issue list -R nsandford19/work-trek --state open --json number,title,labels,body` + the ranking in [`TASK_POLICY.md`](TASK_POLICY.md) |
+| `mc issue 42` | `gh issue view 42 -R nsandford19/work-trek --json labels,body` + exact registry lookup in `repositories/*.yaml` |
 | `mc doctor` | `git --version`, `gh auth status` |
 | `mc validate` | read the schemas in `machines/README.md` and [`MEMORY_POLICY.md`](MEMORY_POLICY.md) |
 | `mc repo scan` | `rg --files --hidden -g '**/.git/HEAD'` under known dev roots |
 | `mc onboard` | paste the pointer block from [`skills/register-repository`](../skills/register-repository/SKILL.md) §D into `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md` |
-| `mc dashboard` | the numbers are all pinned `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}` queries ([`TASK_POLICY.md`](TASK_POLICY.md) §3); the HTML is convenience, never canonical |
-| `mc issues cache` | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --limit 1000 --json ...,body` — the cache (gitignored `reports/generated/issues.md`, or `git show` from the `dashboard` branch) serves cheap read-only lookups only; anything authoritative reads GitHub live ([`TASK_POLICY.md`](TASK_POLICY.md) §3) |
+| `mc dashboard` | the numbers are all pinned `gh issue list -R nsandford19/work-trek` queries ([`TASK_POLICY.md`](TASK_POLICY.md) §3); the HTML is convenience, never canonical |
+| `mc issues cache` | `gh issue list -R nsandford19/work-trek --state all --limit 1000 --json ...,body` — the cache (gitignored `reports/generated/issues.md`, or `git show` from the `dashboard` branch) serves cheap read-only lookups only; anything authoritative reads GitHub live ([`TASK_POLICY.md`](TASK_POLICY.md) §3) |
 
 ---
 

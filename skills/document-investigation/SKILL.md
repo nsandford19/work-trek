@@ -22,8 +22,8 @@ fails the bar, leave the findings as an issue comment and say so — that is a c
 Do not write a document. Set the issue to `status:waiting` and comment **what was ruled out**:
 
 ```bash
-gh issue edit 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:in-progress --add-label status:waiting
-gh issue comment 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --body "Paused. Ruled out: <A> (because ...), <B> (because ...). Next: <...>"
+gh issue edit 42 -R nsandford19/work-trek --remove-label status:in-progress --add-label status:waiting
+gh issue comment 42 -R nsandford19/work-trek --body "Paused. Ruled out: <A> (because ...), <B> (because ...). Next: <...>"
 ```
 
 ## 2. Decide where it goes
@@ -44,7 +44,7 @@ incident write-up will not be found next time.
 ## 3. Gather the evidence from the issue
 
 ```bash
-gh issue view 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --comments
+gh issue view 42 -R nsandford19/work-trek --comments
 ```
 
 The comment thread is the raw material. The document is the distilled answer — do not paste the
@@ -79,7 +79,7 @@ body. Its duplicate check greps the issue cache before calling the API
 The document lists the issue in `issues:` front matter. The issue gets the document:
 
 ```bash
-gh issue comment 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --body "Findings: investigations/<slug>.md
+gh issue comment 42 -R nsandford19/work-trek --body "Findings: investigations/<slug>.md
 
 Root cause: <one line>. Follow-ups: #45, #46."
 ```
@@ -102,8 +102,8 @@ Two documents means two commits: `docs(project): add <topic> investigation` and
 ## 9. Close the issue — ask first
 
 ```bash
-gh issue edit 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:in-progress
-gh issue close 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --reason completed
+gh issue edit 42 -R nsandford19/work-trek --remove-label status:in-progress
+gh issue close 42 -R nsandford19/work-trek --reason completed
 ```
 
 **Ask before closing.** Closing is the value-capture moment; skipping the steps above loses the

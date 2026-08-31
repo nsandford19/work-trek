@@ -18,14 +18,14 @@ Work through the questions in order.
 Reconcile every issue touched. No issue should be left saying something untrue.
 
 ```bash
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:in-progress
+gh issue list -R nsandford19/work-trek --state open --label status:in-progress
 ```
 
 ```bash
-gh issue edit 43 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:in-progress --add-label status:review     # work done, unverified
-gh issue edit 43 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:in-progress --add-label status:blocked    # hit a blocker
-gh issue edit 43 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:in-progress --add-label status:waiting    # waiting on someone
-gh issue edit 43 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:in-progress --add-label status:ready      # parked, still actionable
+gh issue edit 43 -R nsandford19/work-trek --remove-label status:in-progress --add-label status:review     # work done, unverified
+gh issue edit 43 -R nsandford19/work-trek --remove-label status:in-progress --add-label status:blocked    # hit a blocker
+gh issue edit 43 -R nsandford19/work-trek --remove-label status:in-progress --add-label status:waiting    # waiting on someone
+gh issue edit 43 -R nsandford19/work-trek --remove-label status:in-progress --add-label status:ready      # parked, still actionable
 ```
 
 Leaving something `in-progress` is fine **if it genuinely is** and the next action is recorded
@@ -60,7 +60,7 @@ ADRs.
 ## 4. Is something now blocked?
 
 ```bash
-gh issue edit 43 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --add-label status:blocked --remove-label status:in-progress
+gh issue edit 43 -R nsandford19/work-trek --add-label status:blocked --remove-label status:in-progress
 ```
 
 Add `Blocked by: #57` to the **first line** of the body and comment what the blocker actually is.
@@ -69,8 +69,8 @@ A `blocked` label with no named blocker is a dead end for the next agent.
 Also check the reverse: did anything you finished unblock something?
 
 ```bash
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:blocked --json number,title,body
-gh issue edit 51 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:blocked --add-label status:ready
+gh issue list -R nsandford19/work-trek --state open --label status:blocked --json number,title,body
+gh issue edit 51 -R nsandford19/work-trek --remove-label status:blocked --add-label status:ready
 ```
 
 ## 5. Was follow-up work discovered?
@@ -114,7 +114,7 @@ what lets a different agent, on a different machine, weeks later, resume without
 conversation.
 
 ```bash
-gh issue comment 43 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --body "Stopped here: <state>. Next: <specific action>. Watch out for: <trap>."
+gh issue comment 43 -R nsandford19/work-trek --body "Stopped here: <state>. Next: <specific action>. Watch out for: <trap>."
 ```
 
 Be specific. "Continue working on this" is useless; "the retry logic in SyncJob.cs:88 double-counts

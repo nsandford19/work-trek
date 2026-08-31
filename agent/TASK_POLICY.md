@@ -7,7 +7,7 @@ created: 2026-08-10
 
 # Task Policy
 
-**GitHub Issues in `{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}` are the single source of truth for
+**GitHub Issues in `nsandford19/work-trek` are the single source of truth for
 all work state** — across every project and every source repository, not just work on this
 repo.
 
@@ -40,8 +40,8 @@ GitHub models completion natively. Adding labels for it would duplicate state.
 | Cancelled / won't do | closed, `state_reason: not_planned` |
 
 ```bash
-gh issue close 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --reason completed
-gh issue close 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --reason "not planned"
+gh issue close 42 -R nsandford19/work-trek --reason completed
+gh issue close 42 -R nsandford19/work-trek --reason "not planned"
 ```
 
 Always remove the `status:*` label when closing.
@@ -98,11 +98,11 @@ Use GitHub's native sub-issue relationship. **Verified working on this repo** �
 ```bash
 # Attach: add issue 13 as a sub-issue of 10 (needs internal node ids, not numbers)
 gh api graphql -f query='mutation($p:ID!,$c:ID!){addSubIssue(input:{issueId:$p,subIssueId:$c}){issue{number}}}' \
-  -F p="$(gh issue view 10 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json id --jq .id)" \
-  -F c="$(gh issue view 13 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json id --jq .id)"
+  -F p="$(gh issue view 10 -R nsandford19/work-trek --json id --jq .id)" \
+  -F c="$(gh issue view 13 -R nsandford19/work-trek --json id --jq .id)"
 
 # Read children (simplest path — plain REST)
-gh api repos/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/issues/10/sub_issues \
+gh api repos/nsandford19/work-trek/issues/10/sub_issues \
   --jq '.[] | "#\(.number) \(.title) [\(.state)]"'
 ```
 
@@ -134,34 +134,34 @@ Read-only, safe to run any time:
 
 ```bash
 # Everything open, with labels — the workhorse
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --limit 200 \
+gh issue list -R nsandford19/work-trek --state open --limit 200 \
   --json number,title,labels,body,createdAt,updatedAt
 
 # Actionable now
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:ready
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:in-progress
+gh issue list -R nsandford19/work-trek --state open --label status:ready
+gh issue list -R nsandford19/work-trek --state open --label status:in-progress
 
 # Stuck
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:blocked
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:waiting
+gh issue list -R nsandford19/work-trek --state open --label status:blocked
+gh issue list -R nsandford19/work-trek --state open --label status:waiting
 
 # Untriaged backlog
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:inbox
+gh issue list -R nsandford19/work-trek --state open --label status:inbox
 
 # By priority / area / project
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label p1
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label area:kubernetes
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label project:dns-automation
+gh issue list -R nsandford19/work-trek --state open --label p1
+gh issue list -R nsandford19/work-trek --state open --label area:kubernetes
+gh issue list -R nsandford19/work-trek --state open --label project:dns-automation
 
 # Initiative progress
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --label type:initiative
+gh issue list -R nsandford19/work-trek --state all --label type:initiative
 
 # Historical: what happened with X
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state all --search "elasticsearch mapping" --json number,title,state,closedAt
-gh issue view 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --comments
+gh issue list -R nsandford19/work-trek --state all --search "elasticsearch mapping" --json number,title,state,closedAt
+gh issue view 42 -R nsandford19/work-trek --comments
 
 # Recently finished
-gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state closed --limit 20 --json number,title,closedAt,stateReason
+gh issue list -R nsandford19/work-trek --state closed --limit 20 --json number,title,closedAt,stateReason
 ```
 
 ### The issue cache — the first-line lookup
@@ -183,7 +183,7 @@ git fetch origin dashboard && git show FETCH_HEAD:issues.md | rg -in "elasticsea
 mc issues cache
 
 # 4. only then, the live search API
-gh search issues "elasticsearch" -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}
+gh search issues "elasticsearch" -R nsandford19/work-trek
 ```
 
 Staleness: the header's `generated-at:` stamp is the cache's honesty. Older than ~24 h
@@ -194,7 +194,7 @@ Boundaries:
 
 - **Anything authoritative reads GitHub live.** Before commenting, closing, starting
   work, or reporting status to the operator,
-  `gh issue view <n> -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}` — the cache only *finds*
+  `gh issue view <n> -R nsandford19/work-trek` — the cache only *finds*
   numbers.
 - **The cache never originates work state.** Nothing becomes true by being written there;
   it is gitignored, disposable, and stamped with its generated-at time.
@@ -204,25 +204,25 @@ Mutating:
 
 ```bash
 # Capture (prefer the capture-work skill)
-gh issue create -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --title "..." --body "..." \
+gh issue create -R nsandford19/work-trek --title "..." --body "..." \
   --label type:task,status:inbox,p2,area:infrastructure
 
 # Triage
-gh issue edit 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:inbox --add-label status:ready
+gh issue edit 42 -R nsandford19/work-trek --remove-label status:inbox --add-label status:ready
 
 # Start
-gh issue edit 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:ready --add-label status:in-progress
+gh issue edit 42 -R nsandford19/work-trek --remove-label status:ready --add-label status:in-progress
 
 # Block
-gh issue edit 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:in-progress --add-label status:blocked
-gh issue comment 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --body "Blocked by #57 — waiting on the provider decision."
+gh issue edit 42 -R nsandford19/work-trek --remove-label status:in-progress --add-label status:blocked
+gh issue comment 42 -R nsandford19/work-trek --body "Blocked by #57 — waiting on the provider decision."
 
 # Progress note
-gh issue comment 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --body "..."
+gh issue comment 42 -R nsandford19/work-trek --body "..."
 
 # Close (ASK FIRST)
-gh issue edit 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --remove-label status:review
-gh issue close 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --reason completed
+gh issue edit 42 -R nsandford19/work-trek --remove-label status:review
+gh issue close 42 -R nsandford19/work-trek --reason completed
 ```
 
 **Ask before closing.** Everything else above is free.

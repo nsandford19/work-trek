@@ -56,14 +56,14 @@ Ask for these in a session; they are computed, shown, and discarded:
 | Report | How |
 | --- | --- |
 | What should I work on | [`../skills/whats-next`](../skills/whats-next/SKILL.md) |
-| Active initiatives | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label type:initiative` |
-| Blocked work | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:blocked` |
-| Waiting, with staleness | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label status:waiting --json number,title,updatedAt` |
-| Recently completed | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state closed --limit 20 --json number,title,closedAt,stateReason` |
-| Stale investigations | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --label type:investigation --json number,title,updatedAt` |
+| Active initiatives | `gh issue list -R nsandford19/work-trek --state open --label type:initiative` |
+| Blocked work | `gh issue list -R nsandford19/work-trek --state open --label status:blocked` |
+| Waiting, with staleness | `gh issue list -R nsandford19/work-trek --state open --label status:waiting --json number,title,updatedAt` |
+| Recently completed | `gh issue list -R nsandford19/work-trek --state closed --limit 20 --json number,title,closedAt,stateReason` |
+| Stale investigations | `gh issue list -R nsandford19/work-trek --state open --label type:investigation --json number,title,updatedAt` |
 | Decisions this month | `git log --since="1 month ago" --diff-filter=A --name-only -- '**/decisions/**'` |
 | New durable knowledge | `git log --since="1 month ago" --diff-filter=A --name-only -- knowledge/` |
-| Repositories with active work | `gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --json labels` → `project:*` → `repositories/*.yaml` |
+| Repositories with active work | `gh issue list -R nsandford19/work-trek --state open --json labels` → `project:*` → `repositories/*.yaml` |
 
 A weekly review is just a human writing down the interesting parts of several of these.
 
