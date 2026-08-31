@@ -24,6 +24,7 @@ gh issue list -R nsandford19/work-trek --state open --label project:work-trek
 | --- | --- | --- | --- |
 | [`Entry`](Entry/README.md) | Container for Entry-related projects | `Millers-IT/Entry` | `--label project:Entry` |
 | [`MillersApps`](MillersApps/README.md) | Internal web apps for Production, CS, Accounting, and Developers | `Millers-IT/MillersApps` | `--label project:MillersApps` |
+| [`Mpix`](Mpix/README.md) | Mpix consumer product and supporting services | `Millers-IT/mpix-3`, `Millers-IT/Mpix.Com.Core`, `Millers-IT/Mpix.Create` | `--label project:Mpix` |
 | [`example-project`](example-project/README.md) | Fictional worked example — replace with your first real project | `my-service` (fictional) | `--label project:example-project` |
 
 `example-project/` is a clearly-fictional placeholder demonstrating the layout. Delete it

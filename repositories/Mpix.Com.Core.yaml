@@ -8,6 +8,8 @@ last_verified: 2026-08-31
 technologies: [dotnet, yarp]
 areas: [software-development]
 
+project: Mpix
+
 machines:
   PNOELLES:
     path: 'C:\Users\noahs\Documents\Repos\Mpix.Com.Core'

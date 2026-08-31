@@ -30,9 +30,9 @@ personal defaults (see [`../agent/OPERATING_SYSTEM.md`](../agent/OPERATING_SYSTE
 | Millers-IT/MillersApps | Web apps for Production/CS/Accounting/Devs | MillersApps | PNOELLES |
 | Millers-IT/MillersLab.com | Millers website (www.millerslab.com) | — | PNOELLES |
 | Millers-IT/MillersWorkflows | Argo Workflows + RabbitMQ workflow system | — | PNOELLES |
-| Millers-IT/mpix-3 | Mpix 3.0 Nx monorepo (web + APIs) | — | PNOELLES |
-| Millers-IT/Mpix.Com.Core | Core Mpix.Com services (API, search, YARP) | — | PNOELLES |
-| Millers-IT/Mpix.Create | Visual project design/inspection before print | — | PNOELLES |
+| Millers-IT/mpix-3 | Mpix 3.0 Nx monorepo (web + APIs) | Mpix | PNOELLES |
+| Millers-IT/Mpix.Com.Core | Core Mpix.Com services (API, search, YARP) | Mpix | PNOELLES |
+| Millers-IT/Mpix.Create | Visual project design/inspection before print | Mpix | PNOELLES |
 | Millers-IT/MpixContext | Mpix/Millers runtime, plugins, shared models | — | PNOELLES |
 | Millers-IT/MpixEntry | Mpix Entry solution | — | PNOELLES |
 | nsandford19/mppm | Git-based AI personal project manager | — | PNOELLES |
