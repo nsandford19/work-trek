@@ -1,0 +1,16 @@
+repository: Millers-IT/Mpix.Create
+host: github.com
+description: Visual design/inspection tool for Millers and Mpix projects before printing.
+status: active
+primary_branch: develop
+last_verified: 2026-08-31
+
+technologies: [dotnet, javascript]
+areas: [software-development]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\Mpix.Create'
+
+notes:
+  - 'Default branch is develop, not main. Layout render, product system, user-files plugins.'

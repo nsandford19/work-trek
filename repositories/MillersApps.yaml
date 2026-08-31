@@ -1,0 +1,16 @@
+repository: Millers-IT/MillersApps
+host: github.com
+description: Web apps and tools for Production, CS, Accounting, and Developers.
+status: active
+primary_branch: main
+last_verified: 2026-08-31
+
+technologies: [dotnet, angular, docker]
+areas: [software-development]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\MillersApps'
+
+notes:
+  - 'Angular ClientApp plus .NET server; has CLAUDE.md and docs/.'

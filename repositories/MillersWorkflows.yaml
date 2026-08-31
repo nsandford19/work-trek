@@ -1,0 +1,20 @@
+repository: Millers-IT/MillersWorkflows
+host: github.com
+description: Workflow system on Argo Workflows and RabbitMQ, alongside legacy MillersQueue.
+status: active
+primary_branch: main
+last_verified: 2026-08-31
+
+technologies: [dotnet, aspire, argo-workflows, rabbitmq, kafka, kubernetes]
+areas: [software-development, workflows]
+
+related_systems:
+  - 'Argo Workflow Dashboard: https://p-workflows.millerslab.com/'
+  - 'Grafana: https://grafana.millerslab.com/'
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\MillersWorkflows'
+
+notes:
+  - 'Has AGENTS.md and CLAUDE.md; .NET Aspire, cron/scheduled/worker services, Kafka consumers.'

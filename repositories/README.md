@@ -24,7 +24,19 @@ personal defaults (see [`../agent/OPERATING_SYSTEM.md`](../agent/OPERATING_SYSTE
 
 | Repository | Purpose | Project | Available on |
 | --- | --- | --- | --- |
-| *(none yet — register your first repository below)* | | | |
+| Millers-IT/Entry | Container repo for Entry-related projects | — | PNOELLES |
+| Millers-IT/IdentityServer | Customized Solliance IdentityServer (auth) | — | PNOELLES |
+| Millers-IT/mapi | Millers API solution | — | PNOELLES |
+| Millers-IT/MillersApps | Web apps for Production/CS/Accounting/Devs | — | PNOELLES |
+| Millers-IT/MillersLab.com | Millers website (www.millerslab.com) | — | PNOELLES |
+| Millers-IT/MillersWorkflows | Argo Workflows + RabbitMQ workflow system | — | PNOELLES |
+| Millers-IT/mpix-3 | Mpix 3.0 Nx monorepo (web + APIs) | — | PNOELLES |
+| Millers-IT/Mpix.Com.Core | Core Mpix.Com services (API, search, YARP) | — | PNOELLES |
+| Millers-IT/Mpix.Create | Visual project design/inspection before print | — | PNOELLES |
+| Millers-IT/MpixContext | Mpix/Millers runtime, plugins, shared models | — | PNOELLES |
+| Millers-IT/MpixEntry | Mpix Entry solution | — | PNOELLES |
+| nsandford19/mppm | Git-based AI personal project manager | — | PNOELLES |
+| nsandford19/work-trek | Personal engineering OS / control plane (this repo) | — | PNOELLES |
 
 A fictional worked example of the schema ships as
 [`my-service.yaml.example`](my-service.yaml.example); the `.example` suffix keeps it out

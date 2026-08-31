@@ -1,0 +1,16 @@
+repository: Millers-IT/IdentityServer
+host: github.com
+description: Millers' customized Solliance IdentityServer solution (auth/identity).
+status: active
+primary_branch: main
+last_verified: 2026-08-31
+
+technologies: [dotnet, identityserver, playwright, kubernetes]
+areas: [software-development, identity]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\IdentityServer'
+
+notes:
+  - 'Has an AGENT.md and CI (unit + Playwright e2e) workflows.'

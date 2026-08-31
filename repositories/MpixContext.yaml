@@ -1,0 +1,16 @@
+repository: Millers-IT/MpixContext
+host: github.com
+description: Mpix/Millers runtime, plugins, and shared models (context layer).
+status: active
+primary_branch: master
+last_verified: 2026-08-31
+
+technologies: [dotnet]
+areas: [software-development]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\MpixContext'
+
+notes:
+  - 'Plugins (templates, user-files), runtime (film, production, public), payment client.'

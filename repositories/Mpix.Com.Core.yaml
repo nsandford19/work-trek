@@ -1,0 +1,16 @@
+repository: Millers-IT/Mpix.Com.Core
+host: github.com
+description: Core Mpix.Com services — API core, search, YARP gateway, DLS.
+status: active
+primary_branch: main
+last_verified: 2026-08-31
+
+technologies: [dotnet, yarp]
+areas: [software-development]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\Mpix.Com.Core'
+
+notes:
+  - 'No README; content inferred from solution/folder layout.'

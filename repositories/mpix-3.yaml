@@ -1,0 +1,17 @@
+repository: Millers-IT/mpix-3
+host: github.com
+description: Mpix 3.0 — Nx monorepo for the Mpix web app and APIs.
+status: active
+primary_branch: main
+last_verified: 2026-08-31
+
+technologies: [nx, angular, dotnet, typescript, tailwind]
+areas: [software-development, web]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\mpix-3'
+
+notes:
+  - 'Nx monorepo (apps/, libs/); biome + eslint; has AGENTS.md and CLAUDE.md.'
+  - 'Uses release-please for releasing (see RELEASING.md).'
