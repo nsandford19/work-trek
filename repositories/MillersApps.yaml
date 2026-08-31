@@ -8,6 +8,8 @@ last_verified: 2026-08-31
 technologies: [dotnet, angular, docker]
 areas: [software-development]
 
+project: MillersApps
+
 machines:
   PNOELLES:
     path: 'C:\Users\noahs\Documents\Repos\MillersApps'
