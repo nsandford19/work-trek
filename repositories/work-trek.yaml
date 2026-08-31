@@ -1,0 +1,16 @@
+repository: nsandford19/work-trek
+host: github.com
+description: Personal engineering operating system and agent control plane (this repo).
+status: active
+primary_branch: main
+last_verified: 2026-08-31
+
+technologies: [markdown, yaml, powershell]
+areas: [personal, tooling]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\work-trek'
+
+notes:
+  - 'The control plane itself: GitHub Issues as work-state truth, registries and durable memory here.'

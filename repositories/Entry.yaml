@@ -1,0 +1,14 @@
+repository: Millers-IT/Entry
+host: github.com
+description: Container repository for Entry-related projects.
+status: active
+primary_branch: main
+last_verified: 2026-08-31
+
+areas: [software-development]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\Entry'
+
+notes: []

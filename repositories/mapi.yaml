@@ -1,0 +1,16 @@
+repository: Millers-IT/mapi
+host: github.com
+description: Millers API solution (mapi.sln).
+status: active
+primary_branch: master
+last_verified: 2026-08-31
+
+technologies: [dotnet]
+areas: [software-development]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\mapi'
+
+notes:
+  - 'No README; content inferred from solution/folder layout.'

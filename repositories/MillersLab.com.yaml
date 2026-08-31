@@ -1,0 +1,17 @@
+repository: Millers-IT/MillersLab.com
+host: github.com
+description: Millers website (www.millerslab.com) and related services.
+status: active
+primary_branch: dev
+last_verified: 2026-08-31
+
+technologies: [dotnet, angular, azure-storage]
+areas: [software-development, web]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\MillersLab.com'
+
+notes:
+  - 'Default branch is dev, not main. Includes CRM sync, search, shopping cart.'
+  - 'Has AGENTS.md, DESIGN.md, PRODUCT.md.'

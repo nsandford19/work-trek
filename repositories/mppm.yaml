@@ -1,0 +1,16 @@
+repository: nsandford19/mppm
+host: github.com
+description: Git-based AI personal project manager — Markdown/YAML project state.
+status: active
+primary_branch: main
+last_verified: 2026-08-31
+
+technologies: [markdown, yaml]
+areas: [personal, tooling]
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\mppm'
+
+notes:
+  - 'Personal repo; conceptual predecessor to work-trek (git-as-database agent memory).'
