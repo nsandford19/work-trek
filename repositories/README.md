@@ -27,7 +27,7 @@ personal defaults (see [`../agent/OPERATING_SYSTEM.md`](../agent/OPERATING_SYSTE
 | Millers-IT/Entry | Container repo for Entry-related projects | — | PNOELLES |
 | Millers-IT/IdentityServer | Customized Solliance IdentityServer (auth) | — | PNOELLES |
 | Millers-IT/mapi | Millers API solution | — | PNOELLES |
-| Millers-IT/MillersApps | Web apps for Production/CS/Accounting/Devs | — | PNOELLES |
+| Millers-IT/MillersApps | Web apps for Production/CS/Accounting/Devs | MillersApps | PNOELLES |
 | Millers-IT/MillersLab.com | Millers website (www.millerslab.com) | — | PNOELLES |
 | Millers-IT/MillersWorkflows | Argo Workflows + RabbitMQ workflow system | — | PNOELLES |
 | Millers-IT/mpix-3 | Mpix 3.0 Nx monorepo (web + APIs) | — | PNOELLES |

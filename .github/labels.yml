@@ -111,6 +111,9 @@
 - name: 'project:example-project'
   color: 'D4C5F9'
   description: 'Project: example-project (fictional template example)'
+- name: 'project:MillersApps'
+  color: 'D4C5F9'
+  description: 'Project: MillersApps'
 
 # --- Gating: what this work needs before it can proceed. Zero or more. ----
 - name: 'needs:machine'
