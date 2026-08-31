@@ -1,0 +1,33 @@
+# --- Local, machine-specific, never committed ---
+# Optional local machine override + scratch state written by bootstrap.
+.mc/
+# Generated on-demand status output. Never canonical, never committed.
+reports/generated/
+*.local.md
+*.local.yaml
+*.local.json
+
+# --- Secrets: defence in depth. Nothing secret should ever be authored here. ---
+*.env
+.env*
+*.pem
+*.key
+*.pfx
+*.p12
+secrets.*
+**/secrets/
+
+# --- Editor / OS noise ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vs/
+
+# --- Agent-local caches (vendor entry files themselves ARE committed) ---
+.claude/settings.local.json
+
+# Isolated worktrees created for background agents. Each is a real git repository, so a
+# plain `git add -A` stages it as an embedded repo and quietly breaks clones.
+.claude/worktrees/

@@ -1,0 +1,18 @@
+# Issue form configuration for the Work Trek control plane.
+#
+# Blank issues are allowed on purpose: capture must be cheaper than not capturing.
+# A one-line issue with imperfect labels beats work that never got written down.
+blank_issues_enabled: true
+
+contact_links:
+  - name: Let an agent capture it for you
+    url: https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/skills/capture-work/SKILL.md
+    about: >-
+      Fastest route. An agent creates the issue with type, status, priority, area and
+      project labels applied in one step, and links it to any parent or blocker.
+  - name: What should I work on next?
+    url: https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/skills/whats-next/SKILL.md
+    about: Ranking workflow over open issues — readiness, priority, and local repository availability.
+  - name: Issue taxonomy and gh recipes
+    url: https://github.com/{{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}}/blob/main/agent/TASK_POLICY.md
+    about: What each type and status means, and the exact commands for every operational query.

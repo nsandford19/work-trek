@@ -1,0 +1,11 @@
+# Normalize everything to LF in the repository.
+* text=auto eol=lf
+
+# PowerShell tolerates LF on all platforms; keep it consistent.
+*.ps1   text eol=lf
+*.psm1  text eol=lf
+*.sh    text eol=lf
+*.md    text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.json  text eol=lf

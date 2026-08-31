@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# POSIX shim for the mc accelerator.
+#
+# mc is OPTIONAL. If pwsh is not installed, every operation still works with plain
+# `gh` and `rg` — see agent/OPERATING_SYSTEM.md §7 for the raw equivalents. Losing this
+# script costs speed, never function.
+set -euo pipefail
+
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if ! command -v pwsh >/dev/null 2>&1; then
+  cat >&2 <<'EOF'
+mc requires PowerShell 7 (pwsh), which was not found.
+
+This is not a blocker. Use the raw equivalents instead:
+
+  mc machine      ->  echo "$MC_MACHINE"; hostname; rg -l "$(hostname)" machines/
+  mc next         ->  gh issue list -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --state open --json number,title,labels,body
+                       then follow skills/whats-next/SKILL.md
+  mc issue 42     ->  gh issue view 42 -R {{GITHUB_OWNER}}/{{CONTROL_PLANE_REPO}} --json labels,body
+                       then match Repository/project to repositories/*.yaml
+  mc doctor       ->  git --version; gh auth status
+  mc validate     ->  check the schemas in machines/README.md and agent/MEMORY_POLICY.md
+  mc repo scan    ->  rg --files --hidden --glob '**/.git/HEAD' <dev-root>
+
+To install PowerShell 7:
+  Debian/Ubuntu   sudo apt-get install -y powershell
+  Fedora/RHEL     sudo dnf install -y powershell
+  macOS           brew install --cask powershell
+  Windows         winget install --id Microsoft.PowerShell
+EOF
+  exit 127
+fi
+
+exec pwsh -NoProfile -File "$here/mc.ps1" "$@"

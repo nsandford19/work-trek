@@ -1,0 +1,124 @@
+# Canonical label definitions for the Work Trek issue control plane.
+#
+# Labels are the source of truth for type, status, priority, area and project.
+# Reasoning: decisions/0002-labels-over-projects-fields-for-status.md
+# Semantics:  agent/TASK_POLICY.md
+#
+# Apply with:  mc labels sync
+# Or by hand:  gh label create "<name>" --description "<desc>" --color <hex> --force
+#
+# Cardinality rules (enforced by .github/workflows/validate.yml, not by GitHub):
+#   type:*    exactly 1
+#   status:*  exactly 1 while open, none when closed
+#   p0..p3    exactly 1
+#   area:*    0..n
+#   project:* 0..1
+#   needs:*   0..n
+
+# --- Type: what kind of work this is. Exactly one. -------------------------
+- name: 'type:initiative'
+  color: '5319E7'
+  description: 'A multi-task outcome; contains sub-issues'
+- name: 'type:task'
+  color: '1D76DB'
+  description: 'A specific bounded piece of work'
+- name: 'type:investigation'
+  color: '006B75'
+  description: 'Why is my system behaving like this? (inward, already happening)'
+- name: 'type:research'
+  color: '0E8A16'
+  description: 'Which option should I choose? (outward, not yet chosen)'
+- name: 'type:bug'
+  color: 'D73A4A'
+  description: 'Something of mine is wrong and should be fixed'
+- name: 'type:decision'
+  color: 'B60205'
+  description: 'A choice is required before work continues; produces an ADR'
+- name: 'type:maintenance'
+  color: 'C2E0C6'
+  description: 'Recurring upkeep; no new knowledge expected'
+
+# --- Status: only on OPEN issues. Exactly one. -----------------------------
+# Done      = closed with state_reason completed
+# Cancelled = closed with state_reason not_planned
+- name: 'status:inbox'
+  color: 'EDEDED'
+  description: 'Captured, not triaged. Excluded from what-should-I-work-on'
+- name: 'status:ready'
+  color: '0E8A16'
+  description: 'Triaged, unblocked, actionable now'
+- name: 'status:in-progress'
+  color: 'FBCA04'
+  description: 'Actively being worked'
+- name: 'status:blocked'
+  color: 'D93F0B'
+  description: 'Blocked by another issue I own; see the Blocked by line in the body'
+- name: 'status:waiting'
+  color: 'E99695'
+  description: 'Waiting on an external party or elapsed time'
+- name: 'status:review'
+  color: '5319E7'
+  description: 'Work done, awaiting verification or merge'
+
+# --- Priority: exactly one. ------------------------------------------------
+- name: 'p0'
+  color: 'B60205'
+  description: 'Outage or blocking everything else. Now'
+- name: 'p1'
+  color: 'D93F0B'
+  description: 'This week'
+- name: 'p2'
+  color: 'FBCA04'
+  description: 'Normal. The default'
+- name: 'p3'
+  color: 'C5DEF5'
+  description: 'Someday / nice to have'
+
+# --- Area: subject matter. Zero or more. ----------------------------------
+# These mirror the knowledge/<area>/ directories.
+- name: 'area:software-development'
+  color: 'BFD4F2'
+  description: 'Application and library code'
+- name: 'area:infrastructure'
+  color: 'BFD4F2'
+  description: 'Servers, storage, platform'
+- name: 'area:devops'
+  color: 'BFD4F2'
+  description: 'CI/CD, build, release, automation'
+- name: 'area:kubernetes'
+  color: 'BFD4F2'
+  description: 'Clusters, workloads, operators'
+- name: 'area:databases'
+  color: 'BFD4F2'
+  description: 'SQL Server, Elasticsearch, data stores'
+- name: 'area:security'
+  color: 'BFD4F2'
+  description: 'Certificates, access, hardening, secrets handling'
+- name: 'area:ai'
+  color: 'BFD4F2'
+  description: 'AI agents, LLM tooling, agent infrastructure'
+- name: 'area:networking'
+  color: 'BFD4F2'
+  description: 'DNS, routing, firewalls, connectivity'
+- name: 'area:personal-tools'
+  color: 'BFD4F2'
+  description: 'Workstation setup, scripts, personal workflow'
+
+# --- Project: must match a directory in projects/. At most one. -----------
+# Add one 'project:<name>' entry per directory in projects/ (see projects/README.md).
+# The example below matches the fictional projects/example-project/ — replace both
+# together when you create your first real project.
+- name: 'project:example-project'
+  color: 'D4C5F9'
+  description: 'Project: example-project (fictional template example)'
+
+# --- Gating: what this work needs before it can proceed. Zero or more. ----
+- name: 'needs:machine'
+  color: 'FEF2C0'
+  description: 'Requires a specific machine; name it in the body'
+- name: 'needs:decision'
+  color: 'FEF2C0'
+  description: 'Requires a decision first; link the decision issue'
+- name: 'needs:info'
+  color: 'FEF2C0'
+  description: 'Requires information not yet available'

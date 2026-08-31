@@ -1,0 +1,70 @@
+name: Investigation
+description: Why is my system behaving like this? (inward — something already happening)
+title: 'Why <the observed behaviour>?'
+labels: ['type:investigation', 'status:inbox', 'p2']
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        **Title it as the question.** Use this for something already happening in your own
+        systems. For choosing between external options that are not yet decided, capture a
+        `type:research` issue instead — via the capture-work skill, or
+        `gh issue create --label "type:research,status:inbox,p2"`. There is deliberately no
+        research form.
+
+
+        Working notes belong in **comments on this issue** — cheap, timestamped, no commit
+        noise. Only the conclusion is promoted to Markdown, via
+        [document-investigation](../blob/main/skills/document-investigation/SKILL.md).
+
+  - type: input
+    id: links
+    attributes:
+      label: Links
+      placeholder: 'Blocked by: #12    Parent: #10    Source: #40'
+
+  - type: input
+    id: repository
+    attributes:
+      label: Repository
+      description: Canonical owner/name from `repositories/`, when the investigation belongs to one source repository.
+      placeholder: example-org/dns-tools
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What needs to be explained. Be precise about the observed behaviour versus the expected behaviour.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: >-
+        Scope the investigation, or the eventual finding becomes a trap. Machine, host,
+        cluster, versions, when it started.
+      placeholder: |
+        Machine: example-laptop
+        System: sql-prod-01 / SQL Server 2022 CU12
+        First observed: 2026-08-08
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Initial evidence
+      description: >-
+        Verbatim commands, output, and error text. Exact error strings are the
+        highest-value searchable content in this repository.
+      render: console
+
+  - type: textarea
+    id: hypotheses
+    attributes:
+      label: Hypotheses to test
+      description: >-
+        What might explain it, and how each would be tested. Record the ones you disprove —
+        "ruled out" is the second-most valuable output after an answer.

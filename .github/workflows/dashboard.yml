@@ -1,0 +1,82 @@
+name: Dashboard
+
+# Builds two generated views of live issue state and publishes both to the dedicated
+# `dashboard` branch — nightly and on demand:
+#   index.html   the self-contained progress dashboard (bin/build-dashboard.ps1)
+#   issues.md    the greppable Markdown issue cache, bodies included
+#                (bin/build-issue-cache.ps1) — cheap read-only lookups; GitHub Issues
+#                stay the only source of truth (agent/TASK_POLICY.md §3)
+#
+# Design constraints, deliberate:
+#   - NOT GitHub Pages: this is a private repo holding operational knowledge; a Pages
+#     site would make the dashboard (issue titles, hostnames, project names) public.
+#   - NOT committed to main: generated status output is never canonical and would fill
+#     git log with noise (ARCHITECTURE.md — the no-CURRENT.md decision applies here).
+#   - The `dashboard` branch holds exactly ONE commit, force-pushed each rebuild. The
+#     branch is generated-only; its history is worthless by construction. This is the
+#     one sanctioned force-push in the system (SECURITY_POLICY.md blast radius).
+#
+# View it:
+#   locally            mc dashboard      (writes reports/generated/dashboard.html)
+#                      mc issues cache   (writes reports/generated/issues.md)
+#   from the branch    git fetch origin dashboard && git show FETCH_HEAD:index.html > /tmp/d.html
+#                      git fetch origin dashboard && git show FETCH_HEAD:issues.md
+#                      (the issues.md form is a zero-API-call issue query on any machine)
+#   from a run         download the `dashboard` artifact from the Actions run
+
+on:
+  schedule:
+    # Nightly at 18:30 UTC. Off the hour to avoid the GitHub cron thundering herd,
+    # which delays or drops on-the-hour scheduled runs.
+    - cron: '30 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # push to the dashboard branch
+  issues: read
+
+concurrency:
+  group: dashboard
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # pwsh is preinstalled on ubuntu-latest runners.
+      - name: Build dashboard
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./bin/build-dashboard.ps1 -Out /tmp/pub/index.html
+
+      - name: Build issue cache
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./bin/build-issue-cache.ps1 -Out /tmp/pub/issues.md
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard
+          path: /tmp/pub/
+          retention-days: 14
+
+      - name: Publish to the dashboard branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd /tmp/pub
+          git init -q -b dashboard
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html issues.md
+          git commit -q -m "chore(dashboard): rebuild $(date -u +%FT%TZ)"
+          git push --force \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            dashboard

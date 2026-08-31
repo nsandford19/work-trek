@@ -1,0 +1,135 @@
+name: Validate
+
+# Conservative by design: this workflow only ever REPORTS.
+# It never rewrites content, never edits issues, and never commits.
+# Reasoning: ARCHITECTURE.md §14.2 — automation must save more effort than it costs to
+# debug at 11pm.
+
+on:
+  pull_request:
+    paths:
+      - '**/*.md'
+      - '**/*.yaml'
+      - '**/*.yml'
+      - 'bin/**'
+  push:
+    branches: [main]
+    paths:
+      - '**/*.md'
+      - '**/*.yaml'
+      - '**/*.yml'
+      - 'bin/**'
+  schedule:
+    # Mondays 08:00 UTC — issue label hygiene only. Low frequency on purpose.
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+
+# Event name is part of the group so a Monday scheduled run can never cancel an
+# in-flight push-to-main run (or vice versa).
+concurrency:
+  group: validate-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  documents:
+    name: Documents, registries and links
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # pwsh is preinstalled on ubuntu-latest runners.
+      - name: Validate
+        shell: pwsh
+        run: ./bin/mc.ps1 validate
+
+      - name: Check line endings
+        run: |
+          if git ls-files --eol | grep -E 'w/crlf|w/mixed'; then
+            echo "::error::CRLF or mixed line endings found. This repo is LF-only (.gitattributes)."
+            exit 1
+          fi
+          echo "All tracked files are LF."
+
+  issue-hygiene:
+    name: Issue label hygiene
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Labels cannot enforce "exactly one" the way a Projects single-select field can.
+      # This is the mitigation accepted in decisions/0002. It reports; it does not fix.
+      - name: Report label violations
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          gh issue list --state open --limit 500 --json number,title,labels \
+            > /tmp/open.json
+          gh issue list --state closed --limit 200 --json number,title,labels \
+            > /tmp/closed.json
+
+          violations=0
+          {
+            echo "## Issue label hygiene"
+            echo
+
+            report() {  # $1 = heading, $2 = jq filter, $3 = file
+              local rows
+              rows=$(jq -r "$2 | \"- #\(.number) \(.title)\"" "$3")
+              if [ -n "$rows" ]; then
+                echo "### $1"; echo; echo "$rows"; echo
+                return 1
+              fi
+              return 0
+            }
+
+            report "Open issues without exactly one \`status:\` label" \
+              '.[] | select([.labels[].name | select(startswith("status:"))] | length != 1)' \
+              /tmp/open.json || violations=1
+
+            report "Open issues without exactly one \`type:\` label" \
+              '.[] | select([.labels[].name | select(startswith("type:"))] | length != 1)' \
+              /tmp/open.json || violations=1
+
+            report "Open issues without exactly one priority label" \
+              '.[] | select([.labels[].name | select(test("^p[0-3]$"))] | length != 1)' \
+              /tmp/open.json || violations=1
+
+            report "Open issues with more than one \`project:\` label" \
+              '.[] | select([.labels[].name | select(startswith("project:"))] | length > 1)' \
+              /tmp/open.json || violations=1
+
+            report "Closed issues still carrying a \`status:\` label" \
+              '.[] | select([.labels[].name | select(startswith("status:"))] | length > 0)' \
+              /tmp/closed.json || violations=1
+
+            # project:* must name a real directory in projects/ (TASK_POLICY §5).
+            rows=$(jq -r '.[] | . as $i | .labels[].name
+                | select(startswith("project:"))
+                | "\($i.number)\t\($i.title)\t\(.)"' /tmp/open.json |
+              while IFS=$'\t' read -r number title label; do
+                if [ ! -d "projects/${label#project:}" ]; then
+                  echo "- #$number $title (\`$label\`)"
+                fi
+              done)
+            if [ -n "$rows" ]; then
+              echo "### Open issues whose \`project:\` label has no directory in \`projects/\`"
+              echo; echo "$rows"; echo
+              violations=1
+            fi
+
+            if [ "$violations" -eq 0 ]; then
+              echo "No violations. Every open issue has exactly one type, status and priority."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # Reported in the run summary, not failed: label drift is routine maintenance,
+          # and a red X on a scheduled run trains you to ignore red Xs.
+          exit 0

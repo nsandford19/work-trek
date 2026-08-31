@@ -1,0 +1,53 @@
+name: Task
+description: A specific, bounded piece of work
+title: '<verb> <object> — e.g. Add retry to the DNS sync job'
+labels: ['type:task', 'status:inbox', 'p2']
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Created with `type:task`, `status:inbox`, `p2`. **Adjust priority, area and project
+        labels after creating** — they are deliberately not form fields, because a dropdown
+        answer would live in the body *and* in a label, and duplicated state is what this
+        system exists to avoid. See
+        [TASK_POLICY](../blob/main/agent/TASK_POLICY.md).
+
+  - type: input
+    id: links
+    attributes:
+      label: Links
+      description: 'Machine-readable relationships. Kept on the first line so agents can parse them.'
+      placeholder: 'Blocked by: #12    Parent: #10    Source: #40'
+
+  - type: input
+    id: repository
+    attributes:
+      label: Repository
+      description: Canonical owner/name from `repositories/`; this lets an agent resolve the checkout on any machine.
+      placeholder: example-org/dns-tools
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What
+      description: The outcome wanted, in one or two sentences.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: The trigger. Why this matters now, or what it unblocks.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: >-
+        Repository, relevant durable memory, and any verbatim command or error text —
+        error strings are what future searches match on. Never paste credentials; record a
+        pointer instead (`secret: op://<vault>/<item>/<field>`).
+      placeholder: |
+        Repository: example-org/dns-tools
+        Memory: knowledge/networking/<slug>.md

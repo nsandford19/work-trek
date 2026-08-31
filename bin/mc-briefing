@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+# Read / deliver the latest GitHub notification briefing produced by
+# mc-triage-notifications.
+#
+#   mc-briefing            show the full briefing, mark it seen
+#   mc-briefing --banner   compact banner if unseen, silent otherwise (shell hook)
+#   mc-briefing --toast    fire a Windows toast with the headline (timer hook)
+#   mc-briefing --seen     mark seen without printing
+#
+# "Seen" is just an mtime marker, so a new briefing always re-arms the banner.
+set -uo pipefail
+
+# Root of the control-plane clone: MC_ROOT override, else resolved from this script's location.
+REPO="${MC_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
+DIR="$REPO/.mc/notifications"
+BRIEF="$DIR/latest-briefing.md"
+SEEN="$DIR/.seen"
+
+[ -s "$BRIEF" ] || { [ "${1:-}" = "--banner" ] && exit 0; echo "No briefing yet at $BRIEF" >&2; exit 1; }
+
+unseen()   { [ ! -e "$SEEN" ] || [ "$BRIEF" -nt "$SEEN" ]; }
+# Falls back to the first non-empty line: `claude -p` output is free-form and has been seen
+# to omit the "# " headline entirely on a zero-unread run.
+headline() {
+  local h
+  h=$(sed -n 's/^# //p' "$BRIEF" | head -1)
+  [ -n "$h" ] || h=$(grep -m1 -v '^[[:space:]]*$' "$BRIEF" | cut -c1-90)
+  printf '%s' "$h"
+}
+
+# Tolerant of both the section form "## Needs my action (1)" and the zero-case
+# bullet form "- Needs my action (0)" the skill emits when nothing is unread.
+count() { grep -oiE 'needs (my )?action \([0-9]+\)' "$BRIEF" | head -1 | grep -oE '[0-9]+' | head -1; }
+
+items() {
+  awk '/^#+ *[Nn]eeds ([Mm]y )?[Aa]ction/ {f=1; next}
+       /^#+ /                             {f=0}
+       f && /^- /                         {print}' "$BRIEF"
+}
+
+# "- **Owner/Repo** — title (`reason`) — why → url"  ->  "Owner/Repo — title"
+strip() {
+  sed -e 's/^- *//' -e 's/\*\*//g' \
+      -e 's/ *(`[^`]*`).*$//' -e 's/ *—[^—]*→.*$//' -e 's/ *→.*$//'
+}
+
+case "${1:-}" in
+  --seen)
+    touch "$SEEN" ;;
+
+  --banner)
+    unseen || exit 0
+    n=$(count); n=${n:-0}
+    cols=$(tput cols 2>/dev/null || echo 80); [ "$cols" -gt 100 ] && cols=100
+    printf '\n\033[36m── GitHub briefing · %s ─────\033[0m\n' "$(date -r "$BRIEF" '+%H:%M')"
+    if [ "$n" -gt 0 ]; then
+      printf '\033[1m%s need%s my action:\033[0m\n' "$n" "$([ "$n" = 1 ] || echo s)"
+      items | strip | cut -c "1-$((cols - 4))" | sed 's/^/  /'
+    else
+      printf '%s\n' "$(headline)"
+    fi
+    printf '\033[2m   mc-briefing — full briefing (clears this)\033[0m\n\n' ;;
+
+  --toast)
+    n=$(count); n=${n:-0}
+    first=$(items | strip | head -1)
+    MC_T="$(headline)"
+    MC_B="$n need$([ "$n" = 1 ] || echo s) your action"
+    [ -n "$first" ] && MC_B="$MC_B — $first"
+    export MC_T MC_B
+    # WSLENV hands the strings to the Windows side, so no quote-escaping games.
+    export WSLENV="MC_T:MC_B${WSLENV:+:$WSLENV}"
+    # Resolved explicitly: the timer wrapper sets a minimal PATH with no /mnt/c on it,
+    # so relying on `powershell.exe` being findable would break under systemd.
+    PS_EXE=$(command -v powershell.exe 2>/dev/null \
+             || echo "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+    [ -x "$PS_EXE" ] || { echo "no powershell.exe; banner still armed" >&2; exit 0; }
+    "$PS_EXE" -NoProfile -Command '
+      try {
+        [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType=WindowsRuntime] | Out-Null
+        $t = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02)
+        $x = $t.GetElementsByTagName("text")
+        $x.Item(0).AppendChild($t.CreateTextNode($env:MC_T)) | Out-Null
+        $x.Item(1).AppendChild($t.CreateTextNode($env:MC_B)) | Out-Null
+        $id = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe"
+        [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($id).Show(
+          [Windows.UI.Notifications.ToastNotification]::new($t))
+      } catch { exit 1 }' >/dev/null 2>&1 || {
+        # A swallowed toast must never fail the run — the banner is the guaranteed path.
+        echo "toast delivery failed (banner still armed)" >&2; exit 0; } ;;
+
+  --discussion)
+    # Archive the briefing to GitHub Discussions: one discussion per day, each run
+    # appended as a comment. Survives the next run overwriting latest-briefing.md, and
+    # reads fine from a phone. The briefing is never committed — .mc/ stays gitignored.
+    OWNER={{GITHUB_OWNER}}; NAME={{CONTROL_PLANE_REPO}}
+    CAT="${MC_BRIEF_CATEGORY:-General}"
+    TITLE="GitHub briefing — $(date +%F)"
+    BODY="## $(date '+%H:%M %Z') run"$'\n\n'"$(cat "$BRIEF")"
+
+    meta=$(gh api graphql -f owner="$OWNER" -f name="$NAME" -f query='
+      query($owner:String!,$name:String!){ repository(owner:$owner,name:$name){
+        id discussionCategories(first:25){nodes{id name}} } }' 2>/dev/null) || {
+      echo "discussion: GraphQL unreachable (briefing still on disk)" >&2; exit 0; }
+
+    repo_id=$(printf '%s' "$meta" | jq -r '.data.repository.id')
+    cat_id=$(printf '%s' "$meta" | jq -r --arg c "$CAT" \
+      '.data.repository.discussionCategories.nodes[] | select(.name==$c) | .id')
+    [ -n "$cat_id" ] && [ "$cat_id" != null ] || {
+      echo "discussion: no category '$CAT' (briefing still on disk)" >&2; exit 0; }
+
+    existing=$(gh api graphql -f owner="$OWNER" -f name="$NAME" -f query='
+      query($owner:String!,$name:String!){ repository(owner:$owner,name:$name){
+        discussions(first:30, orderBy:{field:CREATED_AT,direction:DESC}){nodes{id title}} } }' \
+      2>/dev/null | jq -r --arg t "$TITLE" \
+      '.data.repository.discussions.nodes[] | select(.title==$t) | .id' | head -1)
+
+    if [ -n "$existing" ]; then
+      url=$(gh api graphql -f id="$existing" -f body="$BODY" -f query='
+        mutation($id:ID!,$body:String!){ addDiscussionComment(input:{discussionId:$id,body:$body}){
+          comment{url} } }' 2>/dev/null | jq -r '.data.addDiscussionComment.comment.url')
+    else
+      url=$(gh api graphql -f repo="$repo_id" -f cat="$cat_id" -f title="$TITLE" -f body="$BODY" -f query='
+        mutation($repo:ID!,$cat:ID!,$title:String!,$body:String!){
+          createDiscussion(input:{repositoryId:$repo,categoryId:$cat,title:$title,body:$body}){
+            discussion{url} } }' 2>/dev/null | jq -r '.data.createDiscussion.discussion.url')
+    fi
+
+    # Never fail the run over delivery; the banner and the disk copy are unaffected.
+    if [ -n "$url" ] && [ "$url" != null ]; then echo "$url"
+    else echo "discussion: post failed (briefing still on disk)" >&2; exit 0; fi ;;
+
+  ""|--full)
+    cat "$BRIEF"
+    touch "$SEEN" ;;
+
+  *)
+    echo "usage: mc-briefing [--banner|--toast|--discussion|--seen|--full]" >&2; exit 2 ;;
+esac

@@ -1,0 +1,67 @@
+name: Decision
+description: A choice is required before work can continue
+title: 'Decide <the choice> — e.g. Decide the DNS automation provider'
+labels: ['type:decision', 'status:inbox', 'p2']
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        This issue is the **deciding**. The durable record is an **ADR** in `decisions/`,
+        written when the choice is made — see
+        [record-decision](../blob/main/skills/record-decision/SKILL.md).
+
+
+        Only open this if the choice genuinely constrains future work. The test: *would a
+        competent engineer six months from now be tempted to undo it without knowing why it
+        was chosen?* If no, just make the call and move on — trivial ADRs make the important
+        ones unreadable.
+
+
+        **If other work is waiting on this**, label those issues `status:blocked` with
+        `Blocked by: #<this issue>` in their bodies, so closing this one unblocks them.
+
+  - type: input
+    id: links
+    attributes:
+      label: Links
+      placeholder: 'Blocks: #43, #51    Parent: #10'
+
+  - type: input
+    id: repositories
+    attributes:
+      label: Repositories involved
+      description: Canonical owner/name entries from `repositories/`, comma-separated when more than one is affected.
+      placeholder: example-org/dns-tools, example-org/infrastructure
+
+  - type: textarea
+    id: context
+    attributes:
+      label: What forces a decision
+      description: Constraints, requirements, and what is already true. What breaks or stalls without an answer.
+    validations:
+      required: true
+
+  - type: textarea
+    id: options
+    attributes:
+      label: Options under consideration
+      description: One per line with the tradeoff as you currently understand it. It is fine for this to be incomplete.
+      placeholder: |
+        - Option A — cheaper, but needs X
+        - Option B — more work up front, avoids Y
+    validations:
+      required: true
+
+  - type: textarea
+    id: criteria
+    attributes:
+      label: How the choice will be judged
+      description: >-
+        What would make one option clearly right — cost, reversibility, operational burden,
+        a measurement to take. Naming this first is what prevents an endless debate.
+
+  - type: textarea
+    id: blocked
+    attributes:
+      label: What is waiting on this
+      description: Issues, projects, or repositories held up until this is settled.

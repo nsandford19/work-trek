@@ -1,0 +1,19 @@
+# FICTIONAL EXAMPLE — copy to machines/<id>.yaml, edit every field, then delete this file
+# when you no longer need the reference. The `.example` suffix keeps it out of identity
+# resolution and `mc validate`.
+id: example-laptop             # REQUIRED — filename must match
+aliases: [main-laptop]         # optional — friendly/former names
+hostnames: [example-laptop]    # REQUIRED — actual hostnames that map here
+os: windows                    # REQUIRED — windows | linux | macos
+os_detail: Windows 11 Pro 10.0.26100
+role: primary workstation      # REQUIRED — one line
+status: active                 # REQUIRED — active | retired
+last_verified: 2026-01-01      # REQUIRED — YYYY-MM-DD, when this entry was last confirmed true
+shells: [powershell, bash]
+dev_roots:                     # where source repositories live; used by `mc repo scan`
+  - 'C:\dev'
+tools: [git, gh, vscode]
+constraints:                   # MACHINE SCOPE — overrides all broader conventions
+  - 'Line endings must stay LF; core.autocrlf is not relied on.'
+notes:
+  - 'Free-form facts useful to an agent.'

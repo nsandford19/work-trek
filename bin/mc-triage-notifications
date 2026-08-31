@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+# Root of the control-plane clone: MC_ROOT override, else resolved from this script's location.
+REPO="${MC_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
+OUT_DIR="$REPO/.mc/notifications"
+OUT="$OUT_DIR/latest-briefing.md"
+
+# systemd user units start with a near-empty PATH, so set it explicitly.
+# /usr/bin precedes linuxbrew deliberately: /home/linuxbrew/.linuxbrew/bin/gh has been
+# seen as a dangling self-referential symlink, and a linuxbrew-first PATH would shadow
+# a working /usr/bin/gh.
+export PATH="/usr/local/bin:/usr/bin:/bin:/home/linuxbrew/.linuxbrew/bin:$HOME/.local/bin"
+
+cd "$REPO" || { echo "work-trek clone not found at $REPO" >&2; exit 1; }
+mkdir -p "$OUT_DIR"
+
+# Temp file first: a failed run must not overwrite the last good briefing.
+# stdout IS the artifact here, and `claude -p` output is free-form: with zero unread it
+# has been observed returning only "Briefing complete and state written." with no headline,
+# which leaves nothing to render. Pin the output contract explicitly.
+PROMPT='/triage-notifications
+
+This run is unattended and stdout is the only artifact. Print the complete briefing as
+Markdown, always beginning with a "# " headline line that states the unread count. Do this
+even when there are zero unread notifications — never reply with a conversational
+completion message instead of the briefing.'
+
+if claude -p "$PROMPT" --permission-mode auto >"$OUT.tmp" 2>&1; then
+  mv "$OUT.tmp" "$OUT"
+  # Push it three ways; none may fail the run, so mc-briefing swallows its own errors.
+  #   toast      immediate, best-effort (Windows can silently drop it)
+  #   discussion durable archive — latest-briefing.md only ever holds the newest run,
+  #              and the 2026-08-14 10:00 briefing was lost to exactly that
+  #   banner     re-arms automatically on the new mtime
+  mc-briefing --toast || true
+  mc-briefing --discussion || true
+  cat "$OUT"
+else
+  status=$?
+  echo "triage-notifications failed (exit $status); previous briefing left in place" >&2
+  cat "$OUT.tmp" >&2
+  rm -f "$OUT.tmp"
+  exit "$status"
+fi

@@ -1,0 +1,32 @@
+# FICTIONAL EXAMPLE — copy to repositories/<name>.yaml, edit every field, then delete this
+# file when you no longer need the reference. The `.example` suffix keeps it out of path
+# resolution and `mc validate`.
+repository: example-org/my-service   # REQUIRED — owner/name, or local/<name>
+host: github.com                     # REQUIRED — github.com | ado | gitlab | local
+description: Fictional example service demonstrating the registry schema.   # REQUIRED
+status: active                       # REQUIRED — active | archived | deprecated
+primary_branch: main                 # REQUIRED
+last_verified: 2026-01-01            # REQUIRED
+
+purpose: 'A worked example of every optional field; nothing here is real.'
+technologies: [dotnet, sqlserver, kubernetes]
+areas: [software-development, databases]
+
+project: example-project             # optional — links to projects/<name>/
+related_repositories: [example-org/infrastructure]
+related_systems: ['SQL Server: sql-prod-01']
+
+# Local paths per machine. A machine that is absent does NOT have this checked out.
+machines:
+  example-laptop:
+    path: 'C:\dev\my-service'
+
+docs:
+  - 'docs/architecture.md — service design'
+
+# REPOSITORY SCOPE — overrides project, organization and personal conventions.
+conventions:
+  - 'Tabs, not spaces — legacy codebase, do not reformat.'
+
+notes:
+  - 'Integration tests need a local SQL instance.'

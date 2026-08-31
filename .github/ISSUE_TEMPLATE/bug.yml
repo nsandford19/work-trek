@@ -1,0 +1,54 @@
+name: Bug
+description: Something of mine is wrong and should be fixed
+title: '<what is broken> — <where>'
+labels: ['type:bug', 'status:inbox', 'p2']
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Use this when the fault is known or obvious. If the *cause* is unknown and needs
+        diagnosis first, use **Investigation** instead.
+
+
+        Set priority after creating: `p0` outage · `p1` this week · `p2` normal · `p3` someday.
+
+  - type: input
+    id: links
+    attributes:
+      label: Links
+      placeholder: 'Blocked by: #12    Parent: #10    Source: #40'
+
+  - type: input
+    id: repository
+    attributes:
+      label: Repository
+      description: Must match an entry in `repositories/` — register it first if it is missing.
+      placeholder: example-org/dns-tools
+
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: What happens vs what should happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: Exact steps or commands. Note whether it is reliable or intermittent.
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Error output
+      description: Verbatim. This is what future searches will match on.
+      render: console
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: |
+        Machine: example-laptop
+        Versions: <...>

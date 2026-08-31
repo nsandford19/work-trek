@@ -1,0 +1,35 @@
+---
+type: knowledge
+title: "FICTIONAL EXAMPLE: SQL Express installs as a named instance, breaking default-instance connection strings"
+status: active
+created: 2026-01-01
+last_verified: 2026-01-01
+areas: [databases]
+tags: [sql-express, connection-strings]
+issues: []
+---
+
+# FICTIONAL EXAMPLE — SQL Express installs as a named instance, breaking default-instance connection strings
+
+> This is a fictional worked example of a knowledge entry, shipped with the template so you
+> can see the shape. Real entries live at `knowledge/<area>/<slug>.md` — delete this file
+> once you have written one.
+
+**The claim, first.** SQL Server Express installs as the named instance `.\SQLEXPRESS`, not
+the default instance. Every connection string that assumes `Server=localhost` fails with:
+
+```
+A network-related or instance-specific error occurred while establishing a connection to SQL Server.
+(provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+```
+
+**The fix:** use `Server=localhost\SQLEXPRESS`, or reinstall choosing a default instance.
+
+**Scope:** verified on SQL Server 2022 Express, Windows 11, default installer options.
+
+Note the pattern this example demonstrates:
+
+- the **title is a claim**, not a topic — it is what `qmd`/`rg` will match on;
+- the **first paragraph is the answer**; evidence follows;
+- the **verbatim error text** is included — future searches will be that exact string;
+- the **scope is explicit** — versions and environment.

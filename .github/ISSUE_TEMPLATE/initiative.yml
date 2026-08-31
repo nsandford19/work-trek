@@ -1,0 +1,64 @@
+name: Initiative
+description: A multi-task outcome that will contain sub-issues
+title: '<the outcome> — e.g. Migrate DNS automation off the legacy scheduler'
+labels: ['type:initiative', 'status:inbox', 'p2']
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        An initiative is a **container**. It holds sub-issues (tasks, investigations,
+        decisions) and stays open until the outcome is reached.
+
+
+        Open one only when work genuinely spans several issues. A single piece of work is a
+        **Task**.
+
+
+        Attach children as native **sub-issues** rather than listing them here — a hand-kept
+        list in this body would drift from reality. If sub-issues are unavailable, put
+        `Parent: #<this issue>` in each child body instead, and never maintain both.
+
+
+        If this needs durable context — architecture, decisions, runbooks — create a project
+        under `projects/` and a matching `project:<name>` label.
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What is true when this is done. Write it so that "is it finished?" has an unambiguous answer.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why now
+      description: What is costing you today, or what this unlocks.
+
+  - type: textarea
+    id: shape
+    attributes:
+      label: Expected shape
+      description: >-
+        The rough phases or workstreams — enough to create the first few sub-issues from.
+        This is a sketch, not a plan; do not maintain it as work progresses.
+      placeholder: |
+        - Decide <the approach>
+        - Investigate <the unknown>
+        - Implement <the change>
+        - Validate in <environment>
+
+  - type: input
+    id: project
+    attributes:
+      label: Project
+      description: Existing directory in `projects/`, or blank if this needs a new one.
+      placeholder: dns-automation
+
+  - type: input
+    id: repositories
+    attributes:
+      label: Repositories involved
+      description: Must match entries in `repositories/` — register any that are missing.
+      placeholder: example-org/dns-tools, example-org/infrastructure
