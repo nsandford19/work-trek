@@ -24,7 +24,7 @@ personal defaults (see [`../agent/OPERATING_SYSTEM.md`](../agent/OPERATING_SYSTE
 
 | Repository | Purpose | Project | Available on |
 | --- | --- | --- | --- |
-| Millers-IT/Entry | Container repo for Entry-related projects | — | PNOELLES |
+| Millers-IT/Entry | Container repo for Entry-related projects | Entry | PNOELLES |
 | Millers-IT/IdentityServer | Customized Solliance IdentityServer (auth) | — | PNOELLES |
 | Millers-IT/mapi | Millers API solution | — | PNOELLES |
 | Millers-IT/MillersApps | Web apps for Production/CS/Accounting/Devs | MillersApps | PNOELLES |
