@@ -1,0 +1,23 @@
+# Machine registry entry. Schema: machines/README.md
+# Registered by bin/bootstrap.ps1 on 2026-08-31.
+id: 'PNOELLES'
+aliases: []
+hostnames: ['PNOELLES']
+os: windows
+os_detail: 'Microsoft Windows 11 Pro'
+role: 'primary workstation'
+status: active
+last_verified: 2026-08-31
+
+shells: [powershell, bash]
+
+# Only these roots are scanned by `mc repo scan`. Keep the list short.
+dev_roots:
+  - 'C:\Users\noahs\Documents\Repos'
+
+tools: [git, gh, rg, code, kubectl, node, python, dotnet]
+
+# MACHINE SCOPE - highest precedence. Only rules true *because of this machine*.
+constraints: []
+
+notes: []
