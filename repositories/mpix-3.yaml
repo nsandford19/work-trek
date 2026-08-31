@@ -8,6 +8,8 @@ last_verified: 2026-08-31
 technologies: [nx, angular, dotnet, typescript, tailwind]
 areas: [software-development, web]
 
+project: Mpix
+
 machines:
   PNOELLES:
     path: 'C:\Users\noahs\Documents\Repos\mpix-3'

@@ -117,6 +117,9 @@
 - name: 'project:Entry'
   color: 'D4C5F9'
   description: 'Project: Entry'
+- name: 'project:Mpix'
+  color: 'D4C5F9'
+  description: 'Project: Mpix'
 
 # --- Gating: what this work needs before it can proceed. Zero or more. ----
 - name: 'needs:machine'
