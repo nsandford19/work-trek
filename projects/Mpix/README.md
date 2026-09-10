@@ -4,7 +4,7 @@ title: Mpix — the Mpix consumer product and its supporting services
 status: active
 created: 2026-08-31
 last_verified: 2026-08-31
-repositories: [Millers-IT/mpix-3, Millers-IT/Mpix.Com.Core, Millers-IT/Mpix.Create]
+repositories: [Millers-IT/mpix-3, Millers-IT/Mpix.Com.Core, MillersProfessionalImaging/Mpix.Com, Millers-IT/Mpix.Create]
 areas: [software-development, web]
 tags: [mpix]
 ---
@@ -23,6 +23,7 @@ live work lives in issues, and this directory holds what outlives any single iss
 | --- | --- |
 | Mpix 3.0 web app + APIs (Nx monorepo) | `Millers-IT/mpix-3` |
 | Core Mpix.Com services (API core, search, YARP gateway) | `Millers-IT/Mpix.Com.Core` |
+| Legacy Mpix.com storefront (WebForms + Angular) | `MillersProfessionalImaging/Mpix.Com` |
 | Visual design/inspection before print | `Millers-IT/Mpix.Create` |
 
 ## Live work
@@ -51,6 +52,7 @@ and machine scope. Only rules that are true *because of this project*.
 - Repositories:
   [`../../repositories/mpix-3.yaml`](../../repositories/mpix-3.yaml),
   [`../../repositories/Mpix.Com.Core.yaml`](../../repositories/Mpix.Com.Core.yaml),
+  [`../../repositories/Mpix.Com.yaml`](../../repositories/Mpix.Com.yaml),
   [`../../repositories/Mpix.Create.yaml`](../../repositories/Mpix.Create.yaml)
 - Decisions: `decisions/`
 - Investigations: `investigations/`
