@@ -54,4 +54,7 @@ and machine scope. Only rules that are true *because of this project*.
   [`../../repositories/Mpix.Create.yaml`](../../repositories/Mpix.Create.yaml)
 - Decisions: `decisions/`
 - Investigations: `investigations/`
-- Runbooks: `runbooks/`
+- Runbooks: `runbooks/` —
+  [`add-a-new-product.md`](runbooks/add-a-new-product.md): the end-to-end checklist for
+  launching a product (Squidex `DefProduct` + `PageProduct`, CMSKey pricing, sitemap,
+  headers in all three repos)
