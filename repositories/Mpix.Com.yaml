@@ -1,0 +1,22 @@
+repository: MillersProfessionalImaging/Mpix.Com
+host: github.com
+description: Legacy Mpix.com storefront — ASP.NET WebForms site with embedded Angular client apps.
+status: active
+primary_branch: master
+last_verified: 2026-09-10
+
+technologies: [dotnet-framework, webforms, angular, typescript]
+areas: [software-development, web]
+
+project: Mpix
+
+machines:
+  PNOELLES:
+    path: 'C:\Users\noahs\Documents\Repos\Mpix.Com'
+
+notes:
+  - 'No README; content inferred from solution/folder layout.'
+  - 'Primary branch is master, not main — unlike the other Mpix repositories.'
+  - '.NET Framework 4.8 WebForms (106 .aspx, 93 .ascx) with Angular apps under ClientApp/ (Checkout, ShoppingCart, Account, Search).'
+  - 'Header nav lives in Mpix.Com/Shared/Header3.ascx and duplicates every link in a mobile drill-down section.'
+  - 'Source files are UTF-8 with BOM; stripping it shows up as a spurious line-1 change.'

@@ -32,6 +32,7 @@ personal defaults (see [`../agent/OPERATING_SYSTEM.md`](../agent/OPERATING_SYSTE
 | Millers-IT/MillersWorkflows | Argo Workflows + RabbitMQ workflow system | — | PNOELLES |
 | Millers-IT/mpix-3 | Mpix 3.0 Nx monorepo (web + APIs) | Mpix | PNOELLES |
 | Millers-IT/Mpix.Com.Core | Core Mpix.Com services (API, search, YARP) | Mpix | PNOELLES |
+| MillersProfessionalImaging/Mpix.Com | Legacy Mpix.com storefront (WebForms + Angular) | Mpix | PNOELLES |
 | Millers-IT/Mpix.Create | Visual project design/inspection before print | Mpix | PNOELLES |
 | Millers-IT/MpixContext | Mpix/Millers runtime, plugins, shared models | — | PNOELLES |
 | Millers-IT/MpixEntry | Mpix Entry solution | — | PNOELLES |
