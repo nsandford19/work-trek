@@ -48,10 +48,16 @@ gh issue list -R nsandford19/work-trek --state open --label project:Entry
   `RawPrinterHelper.SendBytesToPrinter` branches in the paperwork generators do not run in
   production. Delivery is the print-folder copy, either direct or queued through
   `Utils.DoAutoCorrect` on color-assist orders.
-- **The lab's packing-slip templates live in `MpixEntry\Entry`** (`PackingSlip.xslt`,
-  `PackingSlip2.xslt`, `KodakMoments_PackingSlip.xslt`), not in the `Entry` repo. On that
-  slip the `<h1>` cell is the customer ship-address sort code from MAPI, and the `QC:` number
-  is unique image count — not a quantity.
+- **XSLT templates are per-project — there is no shared or global template library.** Each
+  project keeps its own alongside its code (`MpixEntry\Entry\PackingSlip.xslt`;
+  `RoesPrintEntry`'s `RoutePreview.xslt`, `OrderSummary.xslt`, `PackingSlip.xslt`), each
+  registered as `Content` in that project and named by its own app setting. A layout wanted in
+  a second project is **copied into that project**, not referenced across repos — so the two
+  copies then diverge independently, and a fix to one is not a fix to the other.
+- **Where to look for prior art on a paperwork layout:** whichever project already prints it.
+  `RoesPrintEntry`'s packing slip was seeded from `MpixEntry`'s, which is why the layouts match.
+  On that layout the `<h1>` cell is the customer ship-address sort code from MAPI, and the
+  `QC:` number is unique image count — not a quantity.
 
 ## Conventions
 
