@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Trek — Dashboard</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7; --surface-1: #fcfcfb;
+    --ink-1: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --series-1: #2a78d6; --series-2: #eb6834;
+    --track: #cde2fb;
+    --status-good: #0ca30c; --status-warning: #fab219;
+    --status-serious: #ec835a; --status-critical: #d03b3b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface-1: #1a1a19;
+      --ink-1: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --series-1: #3987e5; --series-2: #d95926;
+      --track: #0d366b;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface-1: #1a1a19;
+    --ink-1: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+    --series-1: #3987e5; --series-2: #d95926;
+    --track: #0d366b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink-1);
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding: 24px; max-width: 1060px; margin-inline: auto;
+  }
+  h1 { font-size: 20px; margin: 0 0 2px; }
+  h2 { font-size: 14px; margin: 0 0 10px; color: var(--ink-2); font-weight: 600; }
+  h3 { font-size: 13px; margin: 12px 0 2px; color: var(--ink-2); font-weight: 600; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .sub a { color: inherit; }
+  .sub strong { color: var(--ink-2); font-weight: 600; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 18px; }
+  .tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .tile .label { font-size: 12px; color: var(--ink-2); }
+  .tile .value { font-size: 30px; font-weight: 600; margin-top: 2px; }
+  .tile .note { font-size: 12px; margin-top: 2px; display: flex; align-items: center; gap: 5px; color: var(--ink-2); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin-bottom: 18px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; overflow-x: auto; }
+  .card.wide { grid-column: 1 / -1; }
+  .card.solo { margin-bottom: 18px; }
+  .cardhead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  svg text.axis { font: 11px system-ui, sans-serif; fill: var(--muted); }
+  svg text.val  { font: 12px system-ui, sans-serif; fill: var(--ink-2); }
+  svg line.grid { stroke: var(--grid); stroke-width: 1; }
+  svg line.baseline { stroke: var(--baseline); stroke-width: 1; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--ink-2); margin-bottom: 6px; }
+  .legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 5px; }
+  .legend span { display: inline-flex; align-items: center; }
+  ul.issues { list-style: none; padding: 0; margin: 0; }
+  ul.issues li { border-bottom: 1px solid var(--grid); font-size: 14px; }
+  ul.issues li:last-child { border-bottom: 0; }
+  ul.issues a { color: var(--series-1); text-decoration: none; font-variant-numeric: tabular-nums; }
+  .meta { color: var(--muted); font-size: 12px; }
+  .why { color: var(--ink-2); font-size: 12px; }
+  .empty { color: var(--muted); font-size: 13px; }
+  .irow details { margin: 0; }
+  .irow summary { list-style: none; cursor: pointer; padding: 7px 0 7px 16px; position: relative; color: inherit; font-size: 14px; }
+  .irow summary::-webkit-details-marker { display: none; }
+  .irow summary::before { content: '\25B8'; position: absolute; left: 2px; top: 8px; color: var(--muted); font-size: 10px; }
+  .irow details[open] summary::before { content: '\25BE'; }
+  .irow summary:focus-visible { outline: 2px solid var(--series-1); outline-offset: 2px; border-radius: 4px; }
+  .idetail { padding: 0 0 10px 16px; display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+  .idetail .excerpt { margin: 0; color: var(--muted); }
+  .bstate { font-size: 11px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--border); }
+  .bstate.open { color: var(--status-critical); }
+  .bstate.closed { color: var(--status-good); }
+  .badge { font-size: 11px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--border); color: var(--ink-2); white-space: nowrap; }
+  .badge.stale { color: var(--status-serious); border-color: var(--status-serious); }
+  li.dim, .dim { opacity: 0.55; }
+  .rule-note { font-size: 12px; color: var(--muted); margin: -4px 0 8px; }
+  .fbrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .fbrow input[type="search"] { flex: 1 1 220px; min-width: 160px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--page); color: var(--ink-1); font: inherit; font-size: 13px; }
+  .fbrow input[type="search"]:focus-visible, button:focus-visible { outline: 2px solid var(--series-1); outline-offset: 1px; }
+  .btn { font: 12px system-ui, sans-serif; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-1); color: var(--ink-2); cursor: pointer; }
+  .chips { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .chipgroup { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .glabel { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; flex: 0 0 60px; }
+  .chip { font: 12px/1 system-ui, sans-serif; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-1); color: var(--ink-2); cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--series-1); border-color: var(--series-1); color: #ffffff; }
+  .wbtns { display: inline-flex; gap: 4px; }
+  .wbtn { font: 12px/1 system-ui, sans-serif; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-1); color: var(--ink-2); cursor: pointer; }
+  .wbtn[aria-pressed="true"] { background: var(--series-1); border-color: var(--series-1); color: #ffffff; }
+  .meter { margin: 10px 0; }
+  .meter .head { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; gap: 10px; align-items: baseline; }
+  .meter .head a { color: inherit; text-decoration: none; }
+  .meter .head .n { color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .meter .bar { height: 10px; border-radius: 5px; background: var(--track); overflow: hidden; }
+  .meter .fill { height: 100%; background: var(--series-1); border-radius: 5px; }
+  .meter .sig { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  details.tablefold { margin-bottom: 18px; }
+  details.tablefold > summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 13px; background: var(--surface-1); }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  td.title { white-space: normal; }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { font-variant-numeric: tabular-nums; }
+  .tablewrap { overflow-x: auto; }
+  footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
+  #tip { position: fixed; pointer-events: none; background: var(--ink-1); color: var(--page);
+         font-size: 12px; padding: 4px 8px; border-radius: 5px; display: none; z-index: 10; }
+  svg .mark:hover { opacity: 0.85; }
+</style>
+</head><body>
+<h1>Work Trek</h1>
+<div class="sub">work state on <a href="https://github.com/nsandford19/work-trek/issues">nsandford19/work-trek</a> · generated <strong>2026-09-11 21:11 UTC</strong> — point-in-time snapshot, <strong>GitHub Issues are canonical</strong> · <a href="https://github.com/nsandford19/work-trek/actions/workflows/dashboard.yml">rebuild on demand</a></div>
+<div class="tiles">
+<div class="tile"><div class="label">needs attention</div><div class="value">0</div></div>
+<div class="tile"><div class="label">open issues</div><div class="value">5</div></div>
+<div class="tile"><div class="label">in progress</div><div class="value">2</div></div>
+<div class="tile"><div class="label">ready</div><div class="value">0</div></div>
+<div class="tile"><div class="label">blocked</div><div class="value">0</div></div>
+<div class="tile"><div class="label">waiting</div><div class="value">0</div></div>
+<div class="tile"><div class="label">inbox (untriaged)</div><div class="value">1</div></div>
+<div class="tile"><div class="label">closed, 30 days</div><div class="value">3</div></div>
+</div>
+<div class="card solo" data-filtersect>
+<h2>Attention required</h2>
+<p class="rule-note">ranked: p0/p1 first, then label drift, stale waiting (&gt;7d), old inbox (&gt;7d)</p>
+<p class="empty">nothing needs attention</p>
+<p class="jsempty empty" hidden>no issues match the current filters</p>
+</div>
+<div class="card solo" id="filterbar" hidden>
+<div class="fbrow">
+<input id="q" type="search" placeholder="search #number or title" aria-label="search issues">
+<span id="showing" class="meta"></span>
+<button id="clear" type="button" class="btn">clear filters</button>
+</div>
+<div class="chips" id="chips"></div>
+</div>
+<div class="grid">
+<div class="card" data-filtersect>
+<h2>Current work — in progress</h2>
+<div class="pgroup">
+<h3>Mpix</h3>
+<ul class="issues filterable">
+<li class="irow" data-n="11"><details><summary><a href="https://github.com/nsandford19/work-trek/issues/11">#11</a> Launch Framed Magnets and Framed Ornaments product pages <span class="meta">p2 &#183; type:task &#183; updated 2d ago</span></summary><div class="idetail"><div>labels: type:task | status:in-progress | p2 | area:software-development | project:Mpix</div><div>created 2026-09-08 - updated 2026-09-08</div><p class="excerpt">## What Launch two new photo-gift products — **Framed Magnets** and **Framed Ornaments** — across the storefront: navigation links in all three web tiers, API pricing config, and the Squidex content that backs the product pages. ## Why Both products exist in the ML catalogue and have Squidex `DefPro...</p><div><a href="https://github.com/nsandford19/work-trek/issues/11">open on GitHub</a></div></div></details></li>
+<li class="irow" data-n="7"><details><summary><a href="https://github.com/nsandford19/work-trek/issues/7">#7</a> Automate Mpix account-deletion process (System DB deletion batch) <span class="meta">p2 &#183; type:task &#183; updated 8d ago</span></summary><div class="idetail"><div>labels: type:task | status:in-progress | p2 | area:software-development | area:databases | needs:info | project:Mpix</div><div>created 2026-08-31 - updated 2026-09-03</div><p class="excerpt">Automate the manual SQL process for deleting Mpix accounts end to end, so aged deletion requests are purged nightly across all target systems without hand-run scripts. ## Context The feature spans two codebases: - **MillersApps** — records deletion requests in `dbo.AccountDeletionRequests` (`Millers...</p><div><a href="https://github.com/nsandford19/work-trek/issues/7">open on GitHub</a></div></div></details></li>
+</ul>
+</div>
+<p class="jsempty empty" hidden>no issues match the current filters</p>
+</div>
+<div class="card" data-filtersect>
+<h2>Blocked / waiting</h2>
+<p class="rule-note">time in state approximated from last update</p>
+<p class="empty">nothing stuck</p>
+<p class="jsempty empty" hidden>no issues match the current filters</p>
+</div>
+</div>
+<div class="card solo" data-filtersect>
+<h2>Next work — ready, ranked</h2>
+<p class="rule-note">ranked per the whats-next skill: priority (p0&#8594;p3), then membership in an open initiative, then decisions that unblock other work; age is a tie-break only — never simply oldest-first</p>
+<p class="empty">nothing ready — triage the inbox or unblock something</p>
+<p class="jsempty empty" hidden>no issues match the current filters</p>
+</div>
+<div class="grid">
+<div class="card" data-filtersect>
+<div class="cardhead"><h2>Recently completed</h2><span class="wbtns" hidden>
+<button type="button" class="wbtn" data-w="7" aria-pressed="false">7d</button>
+<button type="button" class="wbtn" data-w="30" aria-pressed="true">30d</button>
+<button type="button" class="wbtn" data-w="90" aria-pressed="false">90d</button>
+</span></div>
+<p class="rule-note" id="donesum">3 completed in last 30 days</p>
+<ul class="issues filterable" data-completed>
+<li class="irow" data-n="10" data-days="3"><details><summary><a href="https://github.com/nsandford19/work-trek/issues/10">#10</a> Run sheet shows internal substrate code (_Smoothcover_small) instead of paper type on 2nd+ press-card items <span class="meta">closed 09-08</span></summary><div class="idetail"><div>labels: type:bug | p2 | area:software-development | project:Entry</div><div>created 2026-09-03 - updated 2026-09-08 - closed 2026-09-08</div><p class="excerpt">## What On the ROESPress run sheet, the paper type of the **second and any subsequent** press-card item is overwritten with the internal press substrate code (e.g. `_Smoothcover_small`) instead of the human-readable paper type (&quot;Smooth Paper&quot;). The **first** item on the order accidentally keeps the...</p><div><a href="https://github.com/nsandford19/work-trek/issues/10">open on GitHub</a></div></div></details></li>
+<li class="irow" data-n="9" data-days="9"><details><summary><a href="https://github.com/nsandford19/work-trek/issues/9">#9</a> ROES Sports Entry: auto-convert progressive/CMYK JPEGs to baseline sRGB per order <span class="meta">closed 09-02</span></summary><div class="idetail"><div>created 2026-09-01 - updated 2026-09-02 - closed 2026-09-02</div><p class="excerpt">## Requirement Every order passing through **ROES Sports Entry** (`Millers-IT/Entry`, project `original/RoesSportsEntry`) must have its source JPEGs normalised to **baseline sRGB** — progressive scans flattened to baseline, and CMYK converted to RGB — before DP2 migrates them. This was previously a...</p><div><a href="https://github.com/nsandford19/work-trek/issues/9">open on GitHub</a></div></div></details></li>
+<li class="irow" data-n="6" data-days="11"><details><summary><a href="https://github.com/nsandford19/work-trek/issues/6">#6</a> ROESPress: multi-book press orders fail to increment GroupID for DP2 import file <span class="meta">closed 08-31</span></summary><div class="idetail"><div>created 2026-08-31 - updated 2026-08-31 - closed 2026-08-31</div><p class="excerpt">Repositories: Millers-IT/Entry ## Symptom Press book orders containing **more than one book** fail to increment the `GroupID` properly in the generated DP2 import file. Single-book orders are fine; multi-book orders produce colliding/incorrect GroupIDs, so books get merged or written into the wrong...</p><div><a href="https://github.com/nsandford19/work-trek/issues/6">open on GitHub</a></div></div></details></li>
+</ul>
+<p class="jsempty empty" hidden>no issues match the current filters</p>
+</div>
+<div class="card" data-filtersect>
+<h2>Inbox — needs triage</h2>
+<ul class="issues filterable">
+<li class="irow" data-n="14"><details><summary><a href="https://github.com/nsandford19/work-trek/issues/14">#14</a> RoesPrintEntry: summary and preview paperwork PDFs overwrite each other <span class="meta">captured 0d ago</span></summary><div class="idetail"><div>labels: type:bug | status:inbox | p2 | area:software-development | project:Entry</div><div>created 2026-09-10 - updated 2026-09-10</div><p class="excerpt">Source: #13 ## What In `ProcessPaperWork`, both paperwork PDF generators write to — and queue auto-color-assist copies of — the same filename, `{RunSheets}{OrderID}.PDF`. When an order hits both paths, the second write overwrites the first and one of the two sheets is lost. ## Why Discovered while a...</p><div><a href="https://github.com/nsandford19/work-trek/issues/14">open on GitHub</a></div></div></details></li>
+</ul>
+<p class="jsempty empty" hidden>no issues match the current filters</p>
+</div>
+</div>
+<div class="grid">
+<div class="card"><h2>Open by status</h2><svg viewBox="0 0 464 88" role="img" style="width:100%;height:auto">
+<text x="122" y="20" text-anchor="end" class="axis">inbox</text>
+<path d="M130,7 H276 A4,4 0 0 1 280,11 V21 A4,4 0 0 1 276,25 H130 Z" fill="var(--series-1)" class="mark" data-tip="inbox: 1"></path>
+<text x="286" y="20" class="val">1</text>
+<text x="122" y="48" text-anchor="end" class="axis">review</text>
+<path d="M130,35 H426 A4,4 0 0 1 430,39 V49 A4,4 0 0 1 426,53 H130 Z" fill="var(--series-1)" class="mark" data-tip="review: 2"></path>
+<text x="436" y="48" class="val">2</text>
+<text x="122" y="76" text-anchor="end" class="axis">in-progress</text>
+<path d="M130,63 H426 A4,4 0 0 1 430,67 V77 A4,4 0 0 1 426,81 H130 Z" fill="var(--series-1)" class="mark" data-tip="in-progress: 2"></path>
+<text x="436" y="76" class="val">2</text>
+</svg>
+</div>
+<div class="card"><h2>Open by type</h2><svg viewBox="0 0 464 60" role="img" style="width:100%;height:auto">
+<text x="122" y="20" text-anchor="end" class="axis">bug</text>
+<path d="M130,7 H201 A4,4 0 0 1 205,11 V21 A4,4 0 0 1 201,25 H130 Z" fill="var(--series-1)" class="mark" data-tip="bug: 1"></path>
+<text x="211" y="20" class="val">1</text>
+<text x="122" y="48" text-anchor="end" class="axis">task</text>
+<path d="M130,35 H426 A4,4 0 0 1 430,39 V49 A4,4 0 0 1 426,53 H130 Z" fill="var(--series-1)" class="mark" data-tip="task: 4"></path>
+<text x="436" y="48" class="val">4</text>
+</svg>
+</div>
+<div class="card"><h2>Open by priority</h2><svg viewBox="0 0 464 32" role="img" style="width:100%;height:auto">
+<text x="122" y="20" text-anchor="end" class="axis">p2</text>
+<path d="M130,7 H426 A4,4 0 0 1 430,11 V21 A4,4 0 0 1 426,25 H130 Z" fill="var(--series-1)" class="mark" data-tip="p2: 5"></path>
+<text x="436" y="20" class="val">5</text>
+</svg>
+</div>
+<div class="card"><h2>Open by project</h2><svg viewBox="0 0 464 60" role="img" style="width:100%;height:auto">
+<text x="122" y="20" text-anchor="end" class="axis">Entry</text>
+<path d="M130,7 H326 A4,4 0 0 1 330,11 V21 A4,4 0 0 1 326,25 H130 Z" fill="var(--series-1)" class="mark" data-tip="Entry: 2"></path>
+<text x="336" y="20" class="val">2</text>
+<text x="122" y="48" text-anchor="end" class="axis">Mpix</text>
+<path d="M130,35 H426 A4,4 0 0 1 430,39 V49 A4,4 0 0 1 426,53 H130 Z" fill="var(--series-1)" class="mark" data-tip="Mpix: 3"></path>
+<text x="436" y="48" class="val">3</text>
+</svg>
+</div>
+<div class="card wide"><h2>Opened vs closed per week</h2><div class="legend"><span><i style="background:var(--series-1)"></i>opened</span><span><i style="background:var(--series-2)"></i>closed</span></div><svg viewBox="0 0 460 170" role="img" style="width:100%;height:auto">
+<line x1="30" y1="146" x2="400" y2="146" class="baseline"/>
+<text x="24" y="150" text-anchor="end" class="axis">0</text>
+<line x1="30" y1="101.3" x2="400" y2="101.3" class="grid"/>
+<text x="24" y="105.3" text-anchor="end" class="axis">2</text>
+<line x1="30" y1="56.7" x2="400" y2="56.7" class="grid"/>
+<text x="24" y="60.7" text-anchor="end" class="axis">4</text>
+<line x1="30" y1="12" x2="400" y2="12" class="grid"/>
+<text x="24" y="16" text-anchor="end" class="axis">6</text>
+<text x="30" y="164" text-anchor="middle" class="axis">07-20</text>
+<text x="82.9" y="164" text-anchor="middle" class="axis">07-27</text>
+<text x="135.7" y="164" text-anchor="middle" class="axis">08-03</text>
+<text x="188.6" y="164" text-anchor="middle" class="axis">08-10</text>
+<text x="241.4" y="164" text-anchor="middle" class="axis">08-17</text>
+<text x="294.3" y="164" text-anchor="middle" class="axis">08-24</text>
+<text x="347.1" y="164" text-anchor="middle" class="axis">08-31</text>
+<text x="400" y="164" text-anchor="middle" class="axis">09-07</text>
+<polyline points="30,146 82.9,146 135.7,146 188.6,146 241.4,146 294.3,146 347.1,34.3 400,79" fill="none" stroke="var(--series-1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="30" cy="146" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 07-20: 0 opened"/>
+<circle cx="82.9" cy="146" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 07-27: 0 opened"/>
+<circle cx="135.7" cy="146" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-03: 0 opened"/>
+<circle cx="188.6" cy="146" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-10: 0 opened"/>
+<circle cx="241.4" cy="146" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-17: 0 opened"/>
+<circle cx="294.3" cy="146" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-24: 0 opened"/>
+<circle cx="347.1" cy="34.3" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-31: 5 opened"/>
+<circle cx="400" cy="79" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 09-07: 3 opened"/>
+<text x="408" y="83" class="val">opened</text>
+<polyline points="30,146 82.9,146 135.7,146 188.6,146 241.4,146 294.3,146 347.1,101.3 400,123.7" fill="none" stroke="var(--series-2)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="30" cy="146" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 07-20: 0 closed"/>
+<circle cx="82.9" cy="146" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 07-27: 0 closed"/>
+<circle cx="135.7" cy="146" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-03: 0 closed"/>
+<circle cx="188.6" cy="146" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-10: 0 closed"/>
+<circle cx="241.4" cy="146" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-17: 0 closed"/>
+<circle cx="294.3" cy="146" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-24: 0 closed"/>
+<circle cx="347.1" cy="101.3" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 08-31: 2 closed"/>
+<circle cx="400" cy="123.7" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2" class="mark" data-tip="week of 09-07: 1 closed"/>
+<text x="408" y="127.7" class="val">closed</text>
+</svg>
+</div>
+</div>
+<details class="tablefold"><summary>All open issues as a table</summary><div class="tablewrap">
+<table><thead><tr><th>#</th><th>Title</th><th>Type</th><th>Status</th><th>Priority</th><th>Project</th><th>Age (days)</th></tr></thead><tbody>
+<tr><td class="num"><a href="https://github.com/nsandford19/work-trek/issues/7">#7</a></td><td class="title">Automate Mpix account-deletion process (System DB deletion batch)</td><td>task</td><td>in-progress</td><td>p2</td><td>Mpix</td><td class="num">11</td></tr>
+<tr><td class="num"><a href="https://github.com/nsandford19/work-trek/issues/8">#8</a></td><td class="title">Route account-deletion requests to the Millers workflow endpoint instead of email</td><td>task</td><td>review</td><td>p2</td><td>Mpix</td><td class="num">11</td></tr>
+<tr><td class="num"><a href="https://github.com/nsandford19/work-trek/issues/11">#11</a></td><td class="title">Launch Framed Magnets and Framed Ornaments product pages</td><td>task</td><td>in-progress</td><td>p2</td><td>Mpix</td><td class="num">2</td></tr>
+<tr><td class="num"><a href="https://github.com/nsandford19/work-trek/issues/13">#13</a></td><td class="title">Generate and print a packing slip for ROESPrints orders via XSLT</td><td>task</td><td>review</td><td>p2</td><td>Entry</td><td class="num">1</td></tr>
+<tr><td class="num"><a href="https://github.com/nsandford19/work-trek/issues/14">#14</a></td><td class="title">RoesPrintEntry: summary and preview paperwork PDFs overwrite each other</td><td>bug</td><td>inbox</td><td>p2</td><td>Entry</td><td class="num">0</td></tr>
+</tbody></table></div></details>
+<footer>Generated by <code>bin/build-dashboard.ps1</code> from live GitHub Issues — the single source of truth (agent/TASK_POLICY.md). This page is a snapshot, never canonical. Local rebuild: <code>mc dashboard</code>. Nightly rebuild publishes to the <code>dashboard</code> branch. Artifact copy: rebuild with <code>-Fragment</code> and republish.</footer>
+<script type="application/json" id="issue-data">[{"number":14,"title":"RoesPrintEntry: summary and preview paperwork PDFs overwrite each other","url":"https://github.com/nsandford19/work-trek/issues/14","state":"OPEN","stateReason":"","labels":["type:bug","status:inbox","p2","area:software-development","project:Entry"],"createdAt":"2026-09-10T21:37:10Z","closedAt":null,"updatedAt":"2026-09-10T21:37:10Z","blockers":[],"project":"Entry","type":"bug","status":"inbox","priority":"p2","excerpt":"Source: #13 ## What In `ProcessPaperWork`, both paperwork PDF generators write to — and queue auto-color-assist copies of — the same filename, `{RunSheets}{OrderID}.PDF`. When an order hits both paths, the second write overwrites the first and one of the two sheets is lost. ## Why Discovered while a..."},{"number":13,"title":"Generate and print a packing slip for ROESPrints orders via XSLT","url":"https://github.com/nsandford19/work-trek/issues/13","state":"OPEN","stateReason":"","labels":["type:task","status:review","p2","area:software-development","project:Entry"],"createdAt":"2026-09-10T20:52:20Z","closedAt":null,"updatedAt":"2026-09-10T21:36:39Z","blockers":[],"project":"Entry","type":"task","status":"review","priority":"p2","excerpt":"## What ROESPrints orders should generate and print a **packing slip** as an additional piece of paperwork, alongside the existing route sheet and run/summary sheet. The document must be generated with an **XSL transform driven by an XSLT template** (matching the existing `RoutePreview.xslt` / `Orde..."},{"number":11,"title":"Launch Framed Magnets and Framed Ornaments product pages","url":"https://github.com/nsandford19/work-trek/issues/11","state":"OPEN","stateReason":"","labels":["type:task","status:in-progress","p2","area:software-development","project:Mpix"],"createdAt":"2026-09-08T22:29:48Z","closedAt":null,"updatedAt":"2026-09-08T22:29:48Z","blockers":[],"project":"Mpix","type":"task","status":"in-progress","priority":"p2","excerpt":"## What Launch two new photo-gift products — **Framed Magnets** and **Framed Ornaments** — across the storefront: navigation links in all three web tiers, API pricing config, and the Squidex content that backs the product pages. ## Why Both products exist in the ML catalogue and have Squidex `DefPro..."},{"number":10,"title":"Run sheet shows internal substrate code (_Smoothcover_small) instead of paper type on 2nd+ press-card items","url":"https://github.com/nsandford19/work-trek/issues/10","state":"CLOSED","stateReason":"COMPLETED","labels":["type:bug","p2","area:software-development","project:Entry"],"createdAt":"2026-09-03T19:11:04Z","closedAt":"2026-09-08T17:02:39Z","updatedAt":"2026-09-08T17:02:39Z","blockers":[],"project":"Entry","type":"bug","status":null,"priority":"p2","excerpt":"## What On the ROESPress run sheet, the paper type of the **second and any subsequent** press-card item is overwritten with the internal press substrate code (e.g. `_Smoothcover_small`) instead of the human-readable paper type (\"Smooth Paper\"). The **first** item on the order accidentally keeps the..."},{"number":9,"title":"ROES Sports Entry: auto-convert progressive/CMYK JPEGs to baseline sRGB per order","url":"https://github.com/nsandford19/work-trek/issues/9","state":"CLOSED","stateReason":"COMPLETED","labels":[],"createdAt":"2026-09-01T18:33:46Z","closedAt":"2026-09-02T18:07:49Z","updatedAt":"2026-09-02T18:07:49Z","blockers":[],"project":null,"type":null,"status":null,"priority":null,"excerpt":"## Requirement Every order passing through **ROES Sports Entry** (`Millers-IT/Entry`, project `original/RoesSportsEntry`) must have its source JPEGs normalised to **baseline sRGB** — progressive scans flattened to baseline, and CMYK converted to RGB — before DP2 migrates them. This was previously a..."},{"number":8,"title":"Route account-deletion requests to the Millers workflow endpoint instead of email","url":"https://github.com/nsandford19/work-trek/issues/8","state":"OPEN","stateReason":"","labels":["type:task","status:review","p2","area:software-development","project:Mpix"],"createdAt":"2026-08-31T20:30:19Z","closedAt":null,"updatedAt":"2026-09-02T21:25:20Z","blockers":[],"project":"Mpix","type":"task","status":"review","priority":"p2","excerpt":"## What Change the account-deletion endpoint so that a customer's \"delete my account\" request posts to a **dedicated Millers workflow queue** instead of emailing an employee. Today `AuthController.DeleteAccountAsync` → `AuthService.DeleteUserAsync` notifies staff by calling `IEmailService.SendEmailA..."},{"number":7,"title":"Automate Mpix account-deletion process (System DB deletion batch)","url":"https://github.com/nsandford19/work-trek/issues/7","state":"OPEN","stateReason":"","labels":["type:task","status:in-progress","p2","area:software-development","area:databases","needs:info","project:Mpix"],"createdAt":"2026-08-31T19:41:44Z","closedAt":null,"updatedAt":"2026-09-03T19:15:06Z","blockers":[],"project":"Mpix","type":"task","status":"in-progress","priority":"p2","excerpt":"Automate the manual SQL process for deleting Mpix accounts end to end, so aged deletion requests are purged nightly across all target systems without hand-run scripts. ## Context The feature spans two codebases: - **MillersApps** — records deletion requests in `dbo.AccountDeletionRequests` (`Millers..."},{"number":6,"title":"ROESPress: multi-book press orders fail to increment GroupID for DP2 import file","url":"https://github.com/nsandford19/work-trek/issues/6","state":"CLOSED","stateReason":"COMPLETED","labels":[],"createdAt":"2026-08-31T18:48:53Z","closedAt":"2026-08-31T19:31:03Z","updatedAt":"2026-08-31T19:31:04Z","blockers":[],"project":null,"type":null,"status":null,"priority":null,"excerpt":"Repositories: Millers-IT/Entry ## Symptom Press book orders containing **more than one book** fail to increment the `GroupID` properly in the generated DP2 import file. Single-book orders are fine; multi-book orders produce colliding/incorrect GroupIDs, so books get merged or written into the wrong..."}]</script>
+<div id="tip"></div>
+<script>
+  // Chart tooltips (hover layer for the server-rendered SVGs).
+  var tip = document.getElementById('tip');
+  document.querySelectorAll('[data-tip]').forEach(function (el) {
+    el.addEventListener('mousemove', function (e) {
+      tip.textContent = el.dataset.tip;
+      tip.style.display = 'block';
+      tip.style.left = Math.min(e.clientX + 12, window.innerWidth - tip.offsetWidth - 8) + 'px';
+      tip.style.top = (e.clientY + 14) + 'px';
+    });
+    el.addEventListener('mouseleave', function () { tip.style.display = 'none'; });
+  });
+
+  // Interactive filter layer over the embedded issue data. Everything below only
+  // hides/shows server-rendered rows - with JS disabled the full page still reads.
+  (function () {
+    var dataEl = document.getElementById('issue-data');
+    if (!dataEl) return;
+    var DATA;
+    try { DATA = JSON.parse(dataEl.textContent); } catch (err) { return; }
+    var M = {};
+    DATA.forEach(function (i) { M[i.number] = i; });
+
+    var groups = ['project', 'status', 'priority', 'type'];
+    var active = { project: {}, status: {}, priority: {}, type: {} };
+    var q = '';
+    var win = 30;
+
+    function valueOf(i, g) {
+      if (g === 'status') return i.state === 'CLOSED' ? 'closed' : (i.status || 'none');
+      return i[g] || 'none';
+    }
+    function anyActive(g) {
+      for (var k in active[g]) { if (active[g][k]) return true; }
+      return false;
+    }
+    function matches(i) {
+      for (var gi = 0; gi < groups.length; gi++) {
+        var g = groups[gi];
+        if (anyActive(g) && !active[g][valueOf(i, g)]) return false;
+      }
+      if (q) {
+        var hay = ('#' + i.number + ' ' + i.title).toLowerCase();
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    }
+
+    function updateDone(ul) {
+      var done = 0, np = 0;
+      ul.querySelectorAll('li.irow').forEach(function (r) {
+        if (!r.hidden) { if (r.hasAttribute('data-np')) np++; else done++; }
+      });
+      var sum = document.getElementById('donesum');
+      if (sum) {
+        sum.textContent = done + ' completed in last ' + win + ' days' +
+          (np ? ' · ' + np + ' not planned (dimmed, excluded from count)' : '');
+      }
+    }
+
+    function apply() {
+      var tot = {}, vis = {};
+      document.querySelectorAll('[data-filtersect]').forEach(function (card) {
+        var cardRows = 0, cardVis = 0;
+        card.querySelectorAll('ul.filterable').forEach(function (ul) {
+          var completed = ul.hasAttribute('data-completed');
+          var ulVis = 0;
+          ul.querySelectorAll('li.irow').forEach(function (r) {
+            var n = +r.getAttribute('data-n');
+            var i = M[n];
+            if (completed && +r.getAttribute('data-days') > win) { r.hidden = true; return; }
+            cardRows++; tot[n] = 1;
+            var ok = i ? matches(i) : true;
+            r.hidden = !ok;
+            if (ok) { ulVis++; cardVis++; vis[n] = 1; }
+          });
+          var pg = ul.closest('.pgroup');
+          if (pg) pg.hidden = (ulVis === 0);
+          if (completed) updateDone(ul);
+        });
+        var je = card.querySelector('.jsempty');
+        if (je) je.hidden = !(cardRows > 0 && cardVis === 0);
+      });
+      var showing = document.getElementById('showing');
+      if (showing) {
+        showing.textContent = 'showing ' + Object.keys(vis).length + ' of ' +
+          Object.keys(tot).length + ' issues';
+      }
+    }
+
+    // Build chips from the values actually present in the rendered rows.
+    var values = { project: {}, status: {}, priority: {}, type: {} };
+    document.querySelectorAll('ul.filterable li.irow').forEach(function (r) {
+      var i = M[+r.getAttribute('data-n')];
+      if (!i) return;
+      groups.forEach(function (g) { values[g][valueOf(i, g)] = true; });
+    });
+    var order = {
+      status: ['inbox', 'ready', 'in-progress', 'blocked', 'waiting', 'review', 'closed', 'none'],
+      priority: ['p0', 'p1', 'p2', 'p3', 'none']
+    };
+    var chipbox = document.getElementById('chips');
+    groups.forEach(function (g) {
+      var vals = Object.keys(values[g]);
+      if (!vals.length) return;
+      if (order[g]) { vals.sort(function (a, b) { return order[g].indexOf(a) - order[g].indexOf(b); }); }
+      else { vals.sort(); }
+      var div = document.createElement('div');
+      div.className = 'chipgroup';
+      var lab = document.createElement('span');
+      lab.className = 'glabel';
+      lab.textContent = g;
+      div.appendChild(lab);
+      vals.forEach(function (v) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'chip';
+        b.textContent = (v === 'none') ? '(no ' + g + ')' : v;
+        b.setAttribute('aria-pressed', 'false');
+        b.addEventListener('click', function () {
+          active[g][v] = !active[g][v];
+          b.setAttribute('aria-pressed', active[g][v] ? 'true' : 'false');
+          apply();
+        });
+        div.appendChild(b);
+      });
+      chipbox.appendChild(div);
+    });
+
+    document.getElementById('q').addEventListener('input', function () {
+      q = this.value.trim().toLowerCase();
+      apply();
+    });
+    document.getElementById('clear').addEventListener('click', function () {
+      groups.forEach(function (g) { active[g] = {}; });
+      q = '';
+      document.getElementById('q').value = '';
+      document.querySelectorAll('.chip[aria-pressed="true"]').forEach(function (c) {
+        c.setAttribute('aria-pressed', 'false');
+      });
+      apply();
+    });
+    document.querySelectorAll('.wbtn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        win = +b.getAttribute('data-w');
+        document.querySelectorAll('.wbtn').forEach(function (o) {
+          o.setAttribute('aria-pressed', o === b ? 'true' : 'false');
+        });
+        apply();
+      });
+    });
+
+    document.getElementById('filterbar').hidden = false;
+    document.querySelectorAll('.wbtns').forEach(function (w) { w.hidden = false; });
+    apply();
+  })();
+</script>
+</body></html>
