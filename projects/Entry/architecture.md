@@ -18,7 +18,8 @@ repositories** — `Millers-IT/Entry` and `Millers-IT/MpixEntry` — with nothin
 them. And whether paperwork reaches a printer or a hot folder is decided **per project** (and in
 multi-lab projects, per lab section) by `NoPrint` / `UsePrintApp` in that project's
 `appSettings.json`. Neither is uniform, so a conclusion drawn in one entry project does not
-transfer to its siblings.
+transfer to its siblings. A third trap follows from the same shape: a project can carry a lab's
+config section without running at that lab — see below.
 
 ## Why it matters
 
@@ -75,6 +76,23 @@ Ignore `bin/Debug` and `bin/Release` copies when grepping — they are build out
 real hits. **`OrdItems.NoPrint` and `XRef.NoPrint` are unrelated** despite the name: they are
 per-item product attributes, not the config toggle.
 
+## A lab section in `appSettings.json` does not mean the project runs at that lab
+
+**RoesPrintEntry is not deployed at Columbia.** Its `AppsettingsColumbia` section exists for
+visual parity with the other entry projects; nothing reads it. Confirmed by the operator
+2026-09-21.
+
+So the section's gaps are not defects: it has no `RunSheets`, `ItemPreviewXsl` or
+`OrderSummaryXsl`, and its `BarcodeRenderUrl` points at the Pittsburg `pwebrender` host. None of
+that resolves at runtime. #21 was opened as a config gap on exactly this evidence and closed
+not-planned.
+
+**Read the absence, not the presence.** A lab section that is missing the keys its siblings have
+is the signal that the lab does not run the project — which means adding keys to such a section
+erases the signal. #398 did that in a small way by writing `PackingSlipXsl` and `BarcodeRenderUrl`
+into Columbia's for symmetry. Before treating any lab section as live, confirm deployment rather
+than inferring it from the config shape.
+
 ## How the paperwork flow is shaped
 
 Established in `RoesPrintEntry` specifically; the sibling projects follow a visibly similar
@@ -111,7 +129,7 @@ renders HTML drops and rasterising first bought nothing.
 - #13 — the packing slip work that established this; PR Millers-IT/Entry#398
 - #14 — the `{OrderID}.PDF` collision between the summary and preview sheets
 - #20 — `OrderInfo.PDoc` dead in `RoesPrintEntry`
-- #21 — RoesPrintEntry's Columbia section is missing paperwork keys
+- #21 — closed not-planned: RoesPrintEntry's Columbia section is parity, not a config gap
 - Repositories: [`Entry.yaml`](../../repositories/Entry.yaml) ·
   [`MpixEntry.yaml`](../../repositories/MpixEntry.yaml)
 
