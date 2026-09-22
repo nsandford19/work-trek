@@ -3,7 +3,7 @@ type: project
 title: Entry — container for Entry-related projects
 status: active
 created: 2026-08-31
-last_verified: 2026-08-31
+last_verified: 2026-09-21
 repositories: [Millers-IT/Entry]
 areas: [software-development]
 tags: [millers]
@@ -29,6 +29,11 @@ The live work lives in issues; this directory holds what outlives any single iss
 ```bash
 gh issue list -R nsandford19/work-trek --state open --label project:Entry
 ```
+
+## Architecture
+
+- [`architecture.md`](architecture.md) — paperwork templates are per-project copies spread
+  across `Entry` and `MpixEntry`; direct printing is enabled per project, not repo-wide.
 
 ## Key decisions
 
