@@ -100,8 +100,14 @@ Same nav change in each. `Mpix.Com` and `Mpix.Com.Core` also duplicate every lin
 | Operator's name | Repo | File | Copies |
 | --- | --- | --- | --- |
 | mpix3 | `Millers-IT/mpix-3` | `libs/web/mpix/core-ui/src/lib/header/components/header-menu/header-menu.component.html` | desktop only |
+| mpix3 | `Millers-IT/mpix-3` | `libs/web/mpix/core/src/lib/store/nav-menu/data/photo-gift-menu.ts` (or the sibling data file for the category) | mobile |
 | mpix2 | `MillersProfessionalImaging/Mpix.Com` | `Mpix.Com/Shared/Header3.ascx` | desktop + mobile |
 | local | `Millers-IT/Mpix.Com.Core` | `Mpix.Com.Local/Pages/Shared/Components/Header3/Default.cshtml` | desktop + mobile |
+
+mpix-3's mobile menu is **data-driven** and is not built from the header template. Editing
+`header-menu.component.html` alone ships desktop only. Add the entry to the nav-menu data
+file too (for photo gifts, under the category's menu, e.g. `photoGiftsMagnetsMenu`, with
+`new: true`). Check the result at mobile width (375×812).
 
 Conventions:
 
