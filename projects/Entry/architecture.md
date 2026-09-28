@@ -3,12 +3,12 @@ type: project
 title: Entry paperwork templates are per-project copies spread across two repos, and direct printing is enabled per project — neither is repo-wide
 status: active
 created: 2026-09-21
-last_verified: 2026-09-21
+last_verified: 2026-09-28
 project: Entry
 repositories: [Millers-IT/Entry, Millers-IT/MpixEntry]
 areas: [software-development]
 tags: [paperwork, xslt, printing, roesprints]
-issues: [13, 14, 20, 21]
+issues: [13, 14, 20, 21, 24]
 ---
 
 # Entry paperwork: per-project templates, per-project delivery
@@ -110,9 +110,12 @@ through `Utils.DoAutoCorrect` on color-assist orders. `Utils.GetPrintFolder` rea
 `PSet.PrinterName` to pick the hot folder, so the printer name still matters in a project that
 no longer prints.
 
-Output is **not** uniformly PDF: the summary and preview sheets render to PDF via
-`Bee.HtmlToPdf.PdfGenerator`, while the packing slip ships as HTML, because the print app
-renders HTML drops and rasterising first bought nothing.
+Output is **not** uniformly PDF: only the preview sheet still renders to PDF via
+`Bee.HtmlToPdf.PdfGenerator`. The packing slip (#13) and the order summary (#24,
+Millers-IT/Entry#403 — `GenerateOrderSummary`, `{OrderID}_Summary.html`) ship as HTML, because
+the print app renders HTML drops and rasterising first bought nothing. The summary's
+`file://pfb1.millerslab.com/...` thumbnails render in the print app, confirmed by the operator
+2026-09-28 against the deployed branch.
 
 ## What surprised us
 
@@ -121,13 +124,15 @@ renders HTML drops and rasterising first bought nothing.
 - `NoPrint` being `true` everywhere in *one* project reads like a repo-wide decommissioning of
   direct printing. It is not — two sibling projects still print directly, and five more do not
   use the toggle at all.
-- Filenames collide by design gap: the summary and preview generators both write
-  `{OrderID}.PDF` (#14). Any new sheet needs a distinct suffix.
+- Filenames collided by design gap: the summary and preview generators both wrote
+  `{OrderID}.PDF` (#14). The summary now writes `{OrderID}_Summary.html` (#24); the preview
+  still owns `{OrderID}.PDF`. Any new sheet needs a distinct suffix.
 
 ## Related
 
 - #13 — the packing slip work that established this; PR Millers-IT/Entry#398
 - #14 — the `{OrderID}.PDF` collision between the summary and preview sheets
+- #24 — summary sheet emitted as HTML; PR Millers-IT/Entry#403
 - #20 — `OrderInfo.PDoc` dead in `RoesPrintEntry`
 - #21 — closed not-planned: RoesPrintEntry's Columbia section is parity, not a config gap
 - Repositories: [`Entry.yaml`](../../repositories/Entry.yaml) ·
